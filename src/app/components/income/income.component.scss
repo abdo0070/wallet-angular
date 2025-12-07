@@ -1,0 +1,34 @@
+:host {
+    ::ng-deep {
+        .custom-dialog {
+            .p-dialog-content {
+                padding: 0;
+            }
+
+            .p-dialog-header {
+                padding: 1.5rem;
+                border-bottom: 1px solid #f3f4f6;
+            }
+        }
+
+        // Remove default DataView header borders for cleaner look
+        .p-dataview .p-dataview-header {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .p-dataview-content {
+            background: transparent;
+        }
+
+        // Button hover effects
+        .p-button {
+            transition: all 0.2s;
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+    }
+}

@@ -1,0 +1,158 @@
+<div class="w-full flex justify-center flex-col items-center">
+    <div
+        class="w-full max-w-7xl bg-slate-800 border border-slate-700/50 p-6 md:p-10 rounded-3xl shadow-2xl relative z-10 mx-4 md:mx-6 my-10">
+
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-700 pb-6">
+            <div class="flex flex-col">
+                <h2 class="text-3xl font-extrabold text-gray-100 tracking-tight neon-text-blue">Income Management</h2>
+                <p class="text-gray-400 mt-1">Track your earnings and sources efficiently.</p>
+            </div>
+
+            <div
+                class="flex items-center gap-6 mt-4 md:mt-0 bg-slate-700/50 px-6 py-3 rounded-2xl shadow-lg border border-indigo-500/30 neon-box-blue">
+                <div class="flex flex-col items-end">
+                    <span class="text-xs uppercase font-bold text-indigo-400 tracking-wider">Total Income</span>
+                    <span class="text-3xl font-black text-indigo-300 neon-text-purple">${{ getTotalIncomeAmount() |
+                        number:'1.2-2'
+                        }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-end mb-6">
+            <button type="button" pButton pRipple label="Add New Income" icon="pi pi-plus"
+                class="p-button-rounded bg-gradient-to-r from-indigo-600 to-blue-600 border-none hover:from-indigo-500 hover:to-blue-500 px-6 py-3 shadow-lg shadow-indigo-500/30 transition-transform transform hover:scale-105 font-bold"
+                (click)="openNew()">
+            </button>
+        </div>
+
+        <!-- Dialog -->
+        <p-dialog [header]="isEditMode ? 'Edit Income' : 'Add Income'" [(visible)]="showDialog" [modal]="true"
+            [style]="{ 'width': '500px' }" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
+            <div class="p-4">
+                <form #incomeForm="ngForm" (ngSubmit)="onSubmit(incomeForm)">
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-2">
+                            <label for="IncomeName" class="font-semibold text-gray-700">Source Name</label>
+                            <input id="IncomeName" type="text" pInputText
+                                class="w-full p-3 rounded-lg border-gray-300 focus:border-indigo-500"
+                                placeholder="e.g. Salary, Freelance" name="name" [(ngModel)]="incomeData.name" required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="incomeAmount" class="font-semibold text-gray-700">Amount ($)</label>
+                            <input id="incomeAmount" type="number" pInputText
+                                class="w-full p-3 rounded-lg border-gray-300 focus:border-indigo-500" placeholder="0.00"
+                                name="amount" [(ngModel)]="incomeData.amount" required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="incomeCategory" class="font-semibold text-gray-700">Category</label>
+                            <p-dropdown id="incomeCategory" [options]="categories" [(ngModel)]="selectedCategory"
+                                optionLabel="name" placeholder="Select a Category" name="selectedCategory"
+                                styleClass="w-full rounded-lg border-gray-300" [showClear]="true"></p-dropdown>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" pButton pRipple [label]="isEditMode ? 'Update Source' : 'Save Source'"
+                                icon="pi pi-check"
+                                class="w-full bg-indigo-600 border-none hover:bg-indigo-700 py-3 rounded-xl font-bold text-lg shadow-md"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </p-dialog>
+
+        <!-- Content Area -->
+        <div class="mt-4">
+            <p-dataView #dv [value]="incomes" [layout]="layout"
+                emptyMessage="No income sources found. Add one to get started!">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-end mb-4">
+                        <p-dataViewLayoutOptions
+                            styleClass="bg-slate-700 rounded-lg p-1 border border-slate-600"></p-dataViewLayoutOptions>
+                    </div>
+                </ng-template>
+
+                <!-- LIST VIEW -->
+                <ng-template pTemplate="list" let-incomes>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col md:flex-row items-center p-6 bg-slate-900/50 border border-slate-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 hover:border-indigo-500/30"
+                            *ngFor="let income of incomes">
+
+                            <!-- Icon/Category -->
+                            <div class="flex items-center gap-4 flex-1 w-full md:w-auto">
+                                <div
+                                    class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-indigo-400 shadow-inner">
+                                    <i class="pi pi-briefcase text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-gray-100">{{ income.name }}</div>
+                                    <div
+                                        class="text-sm text-gray-400 bg-slate-800 border border-slate-700 px-2 py-1 rounded-md inline-block mt-1">
+                                        {{ income.category }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Amount & Actions -->
+                            <div class="flex items-center justify-between w-full md:w-auto gap-4 mt-4 md:mt-0">
+                                <span class="text-2xl font-bold text-emerald-400 neon-text-green">+ ${{ income.amount |
+                                    number:'1.2-2'
+                                    }}</span>
+                                <div class="flex gap-2">
+                                    <button pButton icon="pi pi-pencil"
+                                        class="p-button-text p-button-rounded hover:bg-slate-700 text-indigo-400"
+                                        (click)="editIncome(income)" pTooltip="Edit" tooltipPosition="top"></button>
+                                    <button pButton icon="pi pi-trash"
+                                        class="p-button-danger p-button-text p-button-rounded hover:bg-slate-700/50"
+                                        (click)="deleteIncome(income)" pTooltip="Delete" tooltipPosition="top"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- GRID VIEW -->
+                <ng-template pTemplate="grid" let-incomes>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="col-span-1" *ngFor="let income of incomes">
+                            <div
+                                class="bg-slate-900/50 border border-slate-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 flex flex-col h-full relative overflow-hidden group">
+                                <div
+                                    class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                                    <button pButton icon="pi pi-pencil"
+                                        class="p-button-text p-button-rounded text-indigo-400 bg-slate-800 shadow-sm"
+                                        (click)="editIncome(income)"></button>
+                                    <button pButton icon="pi pi-trash"
+                                        class="p-button-danger p-button-text p-button-rounded bg-slate-800 shadow-sm"
+                                        (click)="deleteIncome(income)"></button>
+                                </div>
+
+                                <div class="flex items-center justify-center mb-4">
+                                    <div
+                                        class="w-16 h-16 bg-gradient-to-br from-indigo-500/80 to-purple-600/80 rounded-2xl flex items-center justify-center text-white shadow-lg neon-box-blue">
+                                        <span class="text-2xl font-bold">{{ income.name.charAt(0).toUpperCase()
+                                            }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-center flex-1">
+                                    <h3 class="text-xl font-bold text-gray-100 mb-1">{{ income.name }}</h3>
+                                    <span
+                                        class="text-xs font-semibold text-indigo-400 uppercase tracking-widest bg-slate-800 px-3 py-1 rounded-full border border-slate-700">{{
+                                        income.category }}</span>
+                                </div>
+
+                                <div class="mt-6 text-center pt-4 border-t border-slate-700/50">
+                                    <span class="text-3xl font-black text-white neon-text-blue">${{ income.amount |
+                                        number: '1.2-2'
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>
+<p-toast></p-toast>

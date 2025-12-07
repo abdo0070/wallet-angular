@@ -1,110 +1,158 @@
-<div class="w-full bg-red-500">
-  <!-- MAIN CONTENT -->
-  <div class="w-full bg-gray-50 min-h-screen">
-    <!-- BALANCE + QUICK ACTIONS -->
-    <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
+<div class="w-full flex justify-center flex-col">
+  <app-dashboard-header class="w-full fixed top-0"></app-dashboard-header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="w-11/12 max-w-7xl mx-auto mt-20 pt-10 min-h-screen pb-20">
+
+    <!-- DASHBOARD HEADER -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-100">Financial Overview</h1>
+      <p class="text-gray-400 mt-1">Welcome back, here's your financial summary.</p>
+    </div>
+
+    <!-- WIDGETS GRID -->
+    <div class="grid gap-6 md:grid-cols-3 mb-8">
+
       <!-- Balance Card -->
       <div
-        class="md:col-span-2 bg-indigo-600 text-white p-6 rounded-2xl shadow-xl"
-      >
-        <h3 class="text-lg opacity-90">Total Balance</h3>
-        <p class="text-5xl font-bold mt-3">$12,450.32</p>
-
+        class="md:col-span-2 bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group">
         <div
-          class="mt-6 flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0"
-        >
+          class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-all">
+        </div>
+
+        <h3 class="text-lg text-indigo-200 font-medium relative z-10">Total Balance</h3>
+        <p class="text-5xl font-bold mt-3 relative z-10 neon-text-blue">$12,450.32</p>
+
+        <div class="mt-6 flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 relative z-10">
           <button
-            class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 w-full sm:w-auto font-semibold"
-          >
+            class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl shadow-lg shadow-indigo-500/20 w-full sm:w-auto font-semibold transition-all transform hover:scale-105">
             Add Money
           </button>
           <button
-            class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 w-full sm:w-auto font-semibold"
-          >
+            class="bg-slate-700 hover:bg-slate-600 text-indigo-300 px-6 py-3 rounded-xl shadow w-full sm:w-auto font-semibold transition-all transform hover:scale-105 border border-slate-600">
             Send Money
           </button>
         </div>
       </div>
 
+      <!-- Income Widget -->
+      <div
+        class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent"></div>
+        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+          <i class="pi pi-wallet text-9xl"></i>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-lg opacity-90 font-medium">Total Income</h3>
+          <p class="text-4xl font-bold mt-2 text-emerald-400 neon-text-green">$ {{ totalIncome | number:'1.2-2' }}</p>
+        </div>
+        <button (click)="navigateTo('income')"
+          class="mt-4 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/50 px-4 py-2 rounded-lg font-bold shadow-lg shadow-emerald-500/10 self-start transition-all hover:shadow-emerald-500/20 relative z-10 backdrop-blur-sm">
+          Manage Income
+        </button>
+      </div>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3 mb-8">
       <!-- Quick Actions -->
-      <div class="bg-white p-6 rounded-2xl shadow-xl">
-        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
+      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg h-full">
+        <h3 class="text-xl font-bold text-gray-100 mb-4">Quick Actions</h3>
         <ul class="space-y-3">
           <li>
-            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
-              Pay Bills
+            <button
+              class="w-full py-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 text-left px-4 font-medium text-gray-300 transition-colors flex items-center gap-3 border border-slate-700">
+              <span class="bg-blue-500/20 text-blue-400 p-2 rounded-lg"><i class="pi pi-bolt"></i></span> Pay Bills
             </button>
           </li>
           <li>
-            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
-              Withdraw
+            <button
+              class="w-full py-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 text-left px-4 font-medium text-gray-300 transition-colors flex items-center gap-3 border border-slate-700">
+              <span class="bg-purple-500/20 text-purple-400 p-2 rounded-lg"><i
+                  class="pi pi-arrow-circle-down"></i></span> Withdraw
             </button>
           </li>
           <li>
-            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
-              Exchange
+            <button
+              class="w-full py-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 text-left px-4 font-medium text-gray-300 transition-colors flex items-center gap-3 border border-slate-700">
+              <span class="bg-orange-500/20 text-orange-400 p-2 rounded-lg"><i class="pi pi-euro"></i></span> Exchange
             </button>
           </li>
         </ul>
       </div>
+
+      <!-- TRANSACTIONS TABLE -->
+      <div class="md:col-span-2 bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg h-full">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-100">Recent Transactions</h3>
+          <button class="text-indigo-400 font-semibold text-sm hover:text-indigo-300 hover:underline">View All</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full table-auto">
+            <thead>
+              <tr class="bg-slate-900/50 text-left border-b border-slate-700">
+                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Name</th>
+                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Type</th>
+                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Amount</th>
+                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Date</th>
+              </tr>
+            </thead>
+
+            <tbody class="text-gray-300 text-sm">
+              <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
+                <td class="px-4 py-3 font-medium">Amazon Purchase</td>
+                <td class="px-4 py-3"><span
+                    class="bg-red-500/20 text-red-400 px-2 py-1 rounded-md text-xs font-bold border border-red-500/20">Debit</span>
+                </td>
+                <td class="px-4 py-3 text-gray-200 font-semibold">- $120.50</td>
+                <td class="px-4 py-3 text-gray-500">Dec 12, 2025</td>
+              </tr>
+
+              <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
+                <td class="px-4 py-3 font-medium">Salary</td>
+                <td class="px-4 py-3"><span
+                    class="bg-green-500/20 text-green-400 px-2 py-1 rounded-md text-xs font-bold border border-green-500/20">Credit</span>
+                </td>
+                <td class="px-4 py-3 text-emerald-400 font-bold neon-text-green">+ $4,500.00</td>
+                <td class="px-4 py-3 text-gray-500">Dec 10, 2025</td>
+              </tr>
+
+              <tr class="hover:bg-slate-700/30 transition-colors">
+                <td class="px-4 py-3 font-medium">Starbucks</td>
+                <td class="px-4 py-3"><span
+                    class="bg-red-500/20 text-red-400 px-2 py-1 rounded-md text-xs font-bold border border-red-500/20">Debit</span>
+                </td>
+                <td class="px-4 py-3 text-gray-200 font-semibold">- $8.90</td>
+                <td class="px-4 py-3 text-gray-500">Dec 9, 2025</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- TRANSACTIONS TABLE -->
-    <div class="bg-white p-6 rounded-2xl shadow-xl mx-4 md:mx-6">
-      <h3 class="text-xl font-semibold mb-4">Recent Transactions</h3>
-
-      <div class="overflow-x-auto">
-        <table class="min-w-full table-auto">
-          <thead>
-            <tr class="bg-gray-100 text-left">
-              <th class="px-4 py-3 text-gray-600 text-sm">Name</th>
-              <th class="px-4 py-3 text-gray-600 text-sm">Type</th>
-              <th class="px-4 py-3 text-gray-600 text-sm">Amount</th>
-              <th class="px-4 py-3 text-gray-600 text-sm">Date</th>
-            </tr>
-          </thead>
-
-          <tbody class="text-gray-700 text-sm">
-            <tr class="border-b">
-              <td class="px-4 py-3">Amazon Purchase</td>
-              <td class="px-4 py-3">Debit</td>
-              <td class="px-4 py-3 text-red-600">- $120.50</td>
-              <td class="px-4 py-3">Dec 12, 2025</td>
-            </tr>
-
-            <tr class="border-b">
-              <td class="px-4 py-3">Salary</td>
-              <td class="px-4 py-3">Credit</td>
-              <td class="px-4 py-3 text-green-600">+ $4,500.00</td>
-              <td class="px-4 py-3">Dec 10, 2025</td>
-            </tr>
-
-            <tr class="border-b">
-              <td class="px-4 py-3">Starbucks</td>
-              <td class="px-4 py-3">Debit</td>
-              <td class="px-4 py-3 text-red-600">- $8.90</td>
-              <td class="px-4 py-3">Dec 9, 2025</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- GOAL SETTING SECTION -->
+    <div class="mt-8 mb-20">
+      <app-goal-setting></app-goal-setting>
     </div>
 
     <!-- MOBILE NAV BAR -->
     <div
-      class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-2 flex justify-around md:hidden"
-    >
-      <button class="flex flex-col items-center text-gray-700 text-sm">
-        <span class="text-xl">🏠</span>Home
+      class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 shadow-xl p-3 flex justify-around md:hidden z-50">
+      <button class="flex flex-col items-center text-indigo-400 text-xs font-semibold">
+        <i class="pi pi-home text-xl mb-1 neon-text-blue"></i>Home
       </button>
-      <button class="flex flex-col items-center text-gray-700 text-sm">
-        <span class="text-xl">💳</span>Wallet
+      <button
+        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+        <i class="pi pi-wallet text-xl mb-1"></i>Wallet
       </button>
-      <button class="flex flex-col items-center text-gray-700 text-sm">
-        <span class="text-xl">🔁</span>Transfer
+      <button
+        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+        <i class="pi pi-arrows-alt text-xl mb-1"></i>Transfer
       </button>
-      <button class="flex flex-col items-center text-gray-700 text-sm">
-        <span class="text-xl">⚙️</span>Settings
+      <button
+        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+        <i class="pi pi-cog text-xl mb-1"></i>Settings
       </button>
     </div>
   </div>

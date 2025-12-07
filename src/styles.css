@@ -1,2 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+:root {
+    color-scheme: dark;
+}
+
+body {
+    background-color: #0f172a;
+    /* Slate 900 */
+    color: #f8fafc;
+    /* Slate 50 */
+}
+
+/* Custom Utilities for Neon/Glass effects */
+@layer utilities {
+    .glass-panel {
+        @apply bg-slate-800/80 backdrop-blur-md border border-slate-700/50;
+    }
+
+    .neon-text-blue {
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .neon-text-purple {
+        text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+
+    .neon-text-green {
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+
+    .neon-box-blue {
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+}

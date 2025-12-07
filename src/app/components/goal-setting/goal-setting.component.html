@@ -1,137 +1,119 @@
-<div class="w-full bg-gray-50">
+<div class="w-full">
 
   <!-- PAGE HEADER -->
   <div class="p-4 md:p-6">
-    <h1 class="text-3xl font-bold text-gray-800">Goal Setting</h1>
-    <p class="text-gray-500 mt-1">Create and track your financial goals.</p>
+    <h1 class="text-3xl font-bold text-gray-100">Goal Setting</h1>
+    <p class="text-gray-400 mt-1">Create and track your financial goals.</p>
   </div>
 
   <!-- GOAL CREATION + SUMMARY -->
   <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
 
     <!-- Create New Goal -->
-    <div class="md:col-span-2 bg-indigo-600 text-white p-6 rounded-2xl shadow-xl">
-      <h3 class="text-xl font-semibold">Create New Goal</h3>
+    <div
+      class="md:col-span-2 bg-gradient-to-br from-indigo-900 to-slate-800 border border-indigo-500/20 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+      <h3 class="text-xl font-semibold relative z-10 mb-1">Create New Goal</h3>
+      <p class="text-indigo-300 text-sm mb-5 relative z-10">Set your financial targets and track progress</p>
 
-      <form class="mt-5 space-y-5">
+      <form class="space-y-5 relative z-10">
 
         <div>
-          <label class="block text-sm opacity-90 mb-1">Goal Name</label>
-          <input 
-            type="text"
-            class="w-full p-3 rounded-xl focus:outline-none"
-            placeholder="e.g., Buy a Car"
-          />
+          <label class="block text-sm font-medium text-indigo-200 mb-2">Goal Name</label>
+          <input type="text"
+            class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
+            placeholder="e.g., Buy a Car, Vacation Fund" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm opacity-90 mb-1">Target Amount</label>
-            <input 
-              type="number"
-              class="w-full p-3 rounded-xl focus:outline-none"
-              placeholder="e.g., 5,000"
-            />
+            <label class="block text-sm font-medium text-indigo-200 mb-2">Target Amount ($)</label>
+            <input type="number"
+              class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
+              placeholder="5,000" />
           </div>
 
           <div>
-            <label class="block text-sm opacity-90 mb-1">Deadline</label>
-            <input 
-              type="date"
-              class="w-full p-3 rounded-xl focus:outline-none"
-            />
+            <label class="block text-sm font-medium text-indigo-200 mb-2">Target Deadline</label>
+            <input type="date"
+              class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium [color-scheme:dark]" />
           </div>
         </div>
 
-        <button
-          type="submit"
-          class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 font-semibold w-full sm:w-auto"
-        >
+        <button type="submit"
+          class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white px-8 py-3 rounded-xl shadow-lg shadow-indigo-500/30 font-bold w-full sm:w-auto transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+          <i class="pi pi-plus-circle"></i>
           Save Goal
         </button>
       </form>
     </div>
 
     <!-- Quick Action / Summary -->
-    <div class="bg-white p-6 rounded-2xl shadow-xl">
-      <h3 class="text-xl font-semibold mb-4">Goal Overview</h3>
+    <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+      <h3 class="text-xl font-semibold mb-1 text-gray-100">Goal Overview</h3>
+      <p class="text-gray-400 text-sm mb-4">Your progress summary</p>
 
-      <ul class="space-y-3 text-gray-700">
-        <li class="flex justify-between">
-          <span>Total Goals</span>
-          <span class="font-semibold">3</span>
+      <ul class="space-y-3 text-gray-300">
+        <li
+          class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50 transition-colors">
+          <span class="flex items-center gap-2"><i class="pi pi-flag text-indigo-400"></i> Total Goals</span>
+          <span class="font-bold text-white text-lg">3</span>
         </li>
-        <li class="flex justify-between">
-          <span>Completed</span>
-          <span class="font-semibold text-green-600">1</span>
+        <li
+          class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors">
+          <span class="flex items-center gap-2"><i class="pi pi-check-circle text-emerald-400"></i> Completed</span>
+          <span class="font-bold text-emerald-400 neon-text-green text-lg">1</span>
         </li>
-        <li class="flex justify-between">
-          <span>In Progress</span>
-          <span class="font-semibold text-yellow-600">2</span>
+        <li
+          class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors">
+          <span class="flex items-center gap-2"><i class="pi pi-clock text-amber-400"></i> In Progress</span>
+          <span class="font-bold text-amber-400 text-lg">2</span>
         </li>
       </ul>
     </div>
   </div>
 
   <!-- GOAL LIST TABLE -->
-  <div class="bg-white p-6 rounded-2xl shadow-xl mx-4 md:mx-6">
-    <h3 class="text-xl font-semibold mb-4">Your Goals</h3>
+  <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg mx-4 md:mx-6">
+    <h3 class="text-xl font-semibold mb-4 text-gray-100">Your Goals</h3>
 
     <div class="overflow-x-auto">
       <table class="min-w-full table-auto">
         <thead>
-          <tr class="bg-gray-100 text-left">
-            <th class="px-4 py-3 text-gray-600 text-sm">Goal</th>
-            <th class="px-4 py-3 text-gray-600 text-sm">Target</th>
-            <th class="px-4 py-3 text-gray-600 text-sm">Saved</th>
-            <th class="px-4 py-3 text-gray-600 text-sm">Deadline</th>
+          <tr class="bg-slate-900/50 text-left border-b border-slate-700">
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Goal</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Target</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Saved</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Deadline</th>
           </tr>
         </thead>
 
-        <tbody class="text-gray-700 text-sm">
+        <tbody class="text-gray-300 text-sm">
 
-          <tr class="border-b">
-            <td class="px-4 py-3">Buy a Laptop</td>
+          <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
+            <td class="px-4 py-3 font-medium">Buy a Laptop</td>
             <td class="px-4 py-3">$1200</td>
-            <td class="px-4 py-3 text-green-600">$600</td>
-            <td class="px-4 py-3">Jan 20, 2026</td>
+            <td class="px-4 py-3 text-emerald-400 font-bold">$600</td>
+            <td class="px-4 py-3 text-gray-500">Jan 20, 2026</td>
           </tr>
 
-          <tr class="border-b">
-            <td class="px-4 py-3">Vacation Trip</td>
+          <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
+            <td class="px-4 py-3 font-medium">Vacation Trip</td>
             <td class="px-4 py-3">$3000</td>
-            <td class="px-4 py-3 text-green-600">$1,200</td>
-            <td class="px-4 py-3">Jun 5, 2026</td>
+            <td class="px-4 py-3 text-emerald-400 font-bold">$1,200</td>
+            <td class="px-4 py-3 text-gray-500">Jun 5, 2026</td>
           </tr>
 
-          <tr class="border-b">
-            <td class="px-4 py-3">Emergency Fund</td>
+          <tr class="hover:bg-slate-700/30 transition-colors">
+            <td class="px-4 py-3 font-medium">Emergency Fund</td>
             <td class="px-4 py-3">$5,000</td>
-            <td class="px-4 py-3 text-green-600">$4,100</td>
-            <td class="px-4 py-3">Dec 31, 2026</td>
+            <td class="px-4 py-3 text-emerald-400 font-bold">$4,100</td>
+            <td class="px-4 py-3 text-gray-500">Dec 31, 2026</td>
           </tr>
 
         </tbody>
       </table>
     </div>
-  </div>
-
-  <!-- MOBILE NAV -->
-  <div
-    class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-2 flex justify-around md:hidden"
-  >
-    <button class="flex flex-col items-center text-gray-700 text-sm">
-      <span class="text-xl">🏠</span>Home
-    </button>
-    <button class="flex flex-col items-center text-gray-700 text-sm">
-      <span class="text-xl">🎯</span>Goals
-    </button>
-    <button class="flex flex-col items-center text-gray-700 text-sm">
-      <span class="text-xl">💳</span>Wallet
-    </button>
-    <button class="flex flex-col items-center text-gray-700 text-sm">
-      <span class="text-xl">⚙️</span>Settings
-    </button>
   </div>
 
 </div>
