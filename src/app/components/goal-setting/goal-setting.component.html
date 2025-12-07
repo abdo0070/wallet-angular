@@ -1,1 +1,137 @@
-<p>goal-setting works!</p>
+<div class="w-full bg-gray-50">
+
+  <!-- PAGE HEADER -->
+  <div class="p-4 md:p-6">
+    <h1 class="text-3xl font-bold text-gray-800">Goal Setting</h1>
+    <p class="text-gray-500 mt-1">Create and track your financial goals.</p>
+  </div>
+
+  <!-- GOAL CREATION + SUMMARY -->
+  <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
+
+    <!-- Create New Goal -->
+    <div class="md:col-span-2 bg-indigo-600 text-white p-6 rounded-2xl shadow-xl">
+      <h3 class="text-xl font-semibold">Create New Goal</h3>
+
+      <form class="mt-5 space-y-5">
+
+        <div>
+          <label class="block text-sm opacity-90 mb-1">Goal Name</label>
+          <input 
+            type="text"
+            class="w-full p-3 rounded-xl focus:outline-none"
+            placeholder="e.g., Buy a Car"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm opacity-90 mb-1">Target Amount</label>
+            <input 
+              type="number"
+              class="w-full p-3 rounded-xl focus:outline-none"
+              placeholder="e.g., 5,000"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm opacity-90 mb-1">Deadline</label>
+            <input 
+              type="date"
+              class="w-full p-3 rounded-xl focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 font-semibold w-full sm:w-auto"
+        >
+          Save Goal
+        </button>
+      </form>
+    </div>
+
+    <!-- Quick Action / Summary -->
+    <div class="bg-white p-6 rounded-2xl shadow-xl">
+      <h3 class="text-xl font-semibold mb-4">Goal Overview</h3>
+
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex justify-between">
+          <span>Total Goals</span>
+          <span class="font-semibold">3</span>
+        </li>
+        <li class="flex justify-between">
+          <span>Completed</span>
+          <span class="font-semibold text-green-600">1</span>
+        </li>
+        <li class="flex justify-between">
+          <span>In Progress</span>
+          <span class="font-semibold text-yellow-600">2</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GOAL LIST TABLE -->
+  <div class="bg-white p-6 rounded-2xl shadow-xl mx-4 md:mx-6">
+    <h3 class="text-xl font-semibold mb-4">Your Goals</h3>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto">
+        <thead>
+          <tr class="bg-gray-100 text-left">
+            <th class="px-4 py-3 text-gray-600 text-sm">Goal</th>
+            <th class="px-4 py-3 text-gray-600 text-sm">Target</th>
+            <th class="px-4 py-3 text-gray-600 text-sm">Saved</th>
+            <th class="px-4 py-3 text-gray-600 text-sm">Deadline</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-gray-700 text-sm">
+
+          <tr class="border-b">
+            <td class="px-4 py-3">Buy a Laptop</td>
+            <td class="px-4 py-3">$1200</td>
+            <td class="px-4 py-3 text-green-600">$600</td>
+            <td class="px-4 py-3">Jan 20, 2026</td>
+          </tr>
+
+          <tr class="border-b">
+            <td class="px-4 py-3">Vacation Trip</td>
+            <td class="px-4 py-3">$3000</td>
+            <td class="px-4 py-3 text-green-600">$1,200</td>
+            <td class="px-4 py-3">Jun 5, 2026</td>
+          </tr>
+
+          <tr class="border-b">
+            <td class="px-4 py-3">Emergency Fund</td>
+            <td class="px-4 py-3">$5,000</td>
+            <td class="px-4 py-3 text-green-600">$4,100</td>
+            <td class="px-4 py-3">Dec 31, 2026</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MOBILE NAV -->
+  <div
+    class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-2 flex justify-around md:hidden"
+  >
+    <button class="flex flex-col items-center text-gray-700 text-sm">
+      <span class="text-xl">🏠</span>Home
+    </button>
+    <button class="flex flex-col items-center text-gray-700 text-sm">
+      <span class="text-xl">🎯</span>Goals
+    </button>
+    <button class="flex flex-col items-center text-gray-700 text-sm">
+      <span class="text-xl">💳</span>Wallet
+    </button>
+    <button class="flex flex-col items-center text-gray-700 text-sm">
+      <span class="text-xl">⚙️</span>Settings
+    </button>
+  </div>
+
+</div>
