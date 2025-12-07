@@ -1,6 +1,6 @@
-<div class="w-full flex justify-center flex-col items-center">
+<div class="w-full flex justify-center flex-col items-center min-h-screen pb-24 md:pb-10">
     <div
-        class="w-full max-w-7xl bg-slate-800 border border-slate-700/50 p-6 md:p-10 rounded-3xl shadow-2xl relative z-10 mx-4 md:mx-6 my-10">
+        class="w-11/12 max-w-7xl bg-slate-800 border border-slate-700/50 p-4 md:p-10 rounded-3xl shadow-2xl relative z-10 mx-auto my-6 md:my-10">
 
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-700 pb-6">
@@ -30,24 +30,24 @@
 
         <!-- Dialog -->
         <p-dialog [header]="isEditMode ? 'Edit Income' : 'Add Income'" [(visible)]="showDialog" [modal]="true"
-            [style]="{ 'width': '500px' }" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
+            [style]="{ 'width': '90vw', 'maxWidth': '500px' }" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
             <div class="p-4">
                 <form #incomeForm="ngForm" (ngSubmit)="onSubmit(incomeForm)">
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-2">
-                            <label for="IncomeName" class="font-semibold text-gray-700">Source Name</label>
+                            <label for="IncomeName" class="font-semibold text-gray-200">Source Name</label>
                             <input id="IncomeName" type="text" pInputText
                                 class="w-full p-3 rounded-lg border-gray-300 focus:border-indigo-500"
                                 placeholder="e.g. Salary, Freelance" name="name" [(ngModel)]="incomeData.name" required>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="incomeAmount" class="font-semibold text-gray-700">Amount ($)</label>
+                            <label for="incomeAmount" class="font-semibold text-gray-200">Amount ($)</label>
                             <input id="incomeAmount" type="number" pInputText
                                 class="w-full p-3 rounded-lg border-gray-300 focus:border-indigo-500" placeholder="0.00"
                                 name="amount" [(ngModel)]="incomeData.amount" required>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="incomeCategory" class="font-semibold text-gray-700">Category</label>
+                            <label for="incomeCategory" class="font-semibold text-gray-200">Category</label>
                             <p-dropdown id="incomeCategory" [options]="categories" [(ngModel)]="selectedCategory"
                                 optionLabel="name" placeholder="Select a Category" name="selectedCategory"
                                 styleClass="w-full rounded-lg border-gray-300" [showClear]="true"></p-dropdown>
@@ -153,6 +153,25 @@
                 </ng-template>
             </p-dataView>
         </div>
+    </div>
+
+    <!-- MOBILE NAV BAR -->
+    <div
+        class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 shadow-xl p-3 flex justify-around md:hidden z-40">
+        <button (click)="navigateTo('dashboard')" class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+            <i class="pi pi-home text-xl mb-1"></i>Home
+        </button>
+        <button (click)="navigateTo('income')" class="flex flex-col items-center text-indigo-400 text-xs font-semibold">
+            <i class="pi pi-wallet text-xl mb-1 neon-text-blue"></i>Wallet
+        </button>
+        <button
+            class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+            <i class="pi pi-arrows-alt text-xl mb-1"></i>Transfer
+        </button>
+        <button
+            class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
+            <i class="pi pi-cog text-xl mb-1"></i>Settings
+        </button>
     </div>
 </div>
 <p-toast></p-toast>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { IncomeService } from './income.service';
 import { MessageService } from 'primeng/api';
@@ -72,9 +73,14 @@ export class IncomeComponent implements OnInit {
     constructor(
         private messageService: MessageService,
         private http: HttpClient,
+        private router: Router,
         private sharedservice: SharedService,
         private incomeService: IncomeService
     ) { }
+
+    navigateTo(path: string) {
+        this.router.navigate([path]);
+    }
 
     ngOnInit(): void {
         this.loadIncomesFromFirebase();

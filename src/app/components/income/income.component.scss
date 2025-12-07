@@ -1,13 +1,80 @@
 :host {
     ::ng-deep {
         .custom-dialog {
-            .p-dialog-content {
-                padding: 0;
+            .p-dialog {
+                background: #1e293b;
+                border: 1px solid #334155;
+                border-radius: 1rem;
+                color: #f1f5f9;
             }
 
             .p-dialog-header {
                 padding: 1.5rem;
-                border-bottom: 1px solid #f3f4f6;
+                border-bottom: 1px solid #334155;
+                background: #1e293b;
+                color: #f1f5f9;
+
+                .p-dialog-title {
+                    color: #f1f5f9;
+                    font-weight: 600;
+                }
+
+                .p-dialog-header-icon {
+                    color: #94a3b8;
+                    &:hover {
+                        color: #f1f5f9;
+                        background: #334155;
+                    }
+                }
+            }
+
+            .p-dialog-content {
+                padding: 0;
+                background: #1e293b;
+                color: #f1f5f9;
+            }
+
+            input.p-inputtext {
+                background: #0f172a;
+                border: 1px solid #334155;
+                color: #f1f5f9;
+                &:focus {
+                    border-color: #6366f1;
+                    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.2);
+                }
+                &::placeholder {
+                    color: #64748b;
+                }
+            }
+
+            .p-dropdown {
+                background: #0f172a;
+                border: 1px solid #334155;
+                color: #f1f5f9;
+                &:not(.p-disabled):hover {
+                    border-color: #475569;
+                }
+                &:not(.p-disabled).p-focus {
+                    border-color: #6366f1;
+                    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.2);
+                }
+            }
+
+            .p-dropdown-panel {
+                background: #1e293b;
+                border: 1px solid #334155;
+                color: #f1f5f9;
+            }
+
+            .p-dropdown-item {
+                color: #f1f5f9;
+                &:hover {
+                    background: #334155;
+                }
+                &.p-highlight {
+                    background: #6366f1;
+                    color: #ffffff;
+                }
             }
         }
 
