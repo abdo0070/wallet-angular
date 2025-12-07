@@ -1,1 +1,111 @@
-<p>dashboard works!</p>
+<div class="w-full bg-red-500">
+  <!-- MAIN CONTENT -->
+  <div class="w-full bg-gray-50 min-h-screen pb-20">
+    <!-- BALANCE + QUICK ACTIONS -->
+    <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
+      <!-- Balance Card -->
+      <div
+        class="md:col-span-2 bg-indigo-600 text-white p-6 rounded-2xl shadow-xl"
+      >
+        <h3 class="text-lg opacity-90">Total Balance</h3>
+        <p class="text-5xl font-bold mt-3">$12,450.32</p>
+
+        <div
+          class="mt-6 flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0"
+        >
+          <button
+            class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 w-full sm:w-auto font-semibold"
+          >
+            Add Money
+          </button>
+          <button
+            class="bg-white text-indigo-600 px-5 py-3 rounded-xl shadow hover:bg-gray-100 w-full sm:w-auto font-semibold"
+          >
+            Send Money
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
+        <ul class="space-y-3">
+          <li>
+            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
+              Pay Bills
+            </button>
+          </li>
+          <li>
+            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
+              Withdraw
+            </button>
+          </li>
+          <li>
+            <button class="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100">
+              Exchange
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS TABLE -->
+    <div class="bg-white p-6 rounded-2xl shadow-xl mx-4 md:mx-6">
+      <h3 class="text-xl font-semibold mb-4">Recent Transactions</h3>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+          <thead>
+            <tr class="bg-gray-100 text-left">
+              <th class="px-4 py-3 text-gray-600 text-sm">Name</th>
+              <th class="px-4 py-3 text-gray-600 text-sm">Type</th>
+              <th class="px-4 py-3 text-gray-600 text-sm">Amount</th>
+              <th class="px-4 py-3 text-gray-600 text-sm">Date</th>
+            </tr>
+          </thead>
+
+          <tbody class="text-gray-700 text-sm">
+            <tr class="border-b">
+              <td class="px-4 py-3">Amazon Purchase</td>
+              <td class="px-4 py-3">Debit</td>
+              <td class="px-4 py-3 text-red-600">- $120.50</td>
+              <td class="px-4 py-3">Dec 12, 2025</td>
+            </tr>
+
+            <tr class="border-b">
+              <td class="px-4 py-3">Salary</td>
+              <td class="px-4 py-3">Credit</td>
+              <td class="px-4 py-3 text-green-600">+ $4,500.00</td>
+              <td class="px-4 py-3">Dec 10, 2025</td>
+            </tr>
+
+            <tr class="border-b">
+              <td class="px-4 py-3">Starbucks</td>
+              <td class="px-4 py-3">Debit</td>
+              <td class="px-4 py-3 text-red-600">- $8.90</td>
+              <td class="px-4 py-3">Dec 9, 2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MOBILE NAV BAR -->
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-2 flex justify-around md:hidden"
+    >
+      <button class="flex flex-col items-center text-gray-700 text-sm">
+        <span class="text-xl">🏠</span>Home
+      </button>
+      <button class="flex flex-col items-center text-gray-700 text-sm">
+        <span class="text-xl">💳</span>Wallet
+      </button>
+      <button class="flex flex-col items-center text-gray-700 text-sm">
+        <span class="text-xl">🔁</span>Transfer
+      </button>
+      <button class="flex flex-col items-center text-gray-700 text-sm">
+        <span class="text-xl">⚙️</span>Settings
+      </button>
+    </div>
+  </div>
+</div>
