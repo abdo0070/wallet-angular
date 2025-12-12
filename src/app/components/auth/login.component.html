@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+    <div class="hidden lg:block">
+      <div class="bg-gradient-to-br from-indigo-600/40 via-purple-600/30 to-slate-900 rounded-3xl p-10 border border-indigo-500/20 shadow-2xl relative overflow-hidden">
+        <div class="absolute -left-10 -top-10 w-40 h-40 bg-indigo-500/30 rounded-full blur-3xl"></div>
+        <div class="absolute -right-10 -bottom-10 w-52 h-52 bg-purple-500/20 rounded-full blur-3xl"></div>
+
+        <div class="flex items-center gap-3 mb-6 relative z-10">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg neon-box-blue">
+            <span class="font-bold text-white text-2xl">W</span>
+          </div>
+          <div>
+            <p class="text-indigo-200 text-sm uppercase tracking-widest font-semibold">WalletAI</p>
+            <h2 class="text-3xl font-black text-white">Personal Finance Suite</h2>
+          </div>
+        </div>
+
+        <p class="text-indigo-100/80 text-lg leading-relaxed relative z-10">
+          Stay on top of your finances with a clear, modern dashboard. Securely log in to manage income, goals, and insights in one place.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 mt-8 relative z-10">
+          <div class="bg-slate-900/60 border border-slate-700/70 rounded-2xl p-4 shadow-md">
+            <p class="text-emerald-400 text-sm font-semibold mb-1">Live Tracking</p>
+            <p class="text-gray-200 font-bold text-xl">$12,450.32</p>
+          </div>
+          <div class="bg-slate-900/60 border border-slate-700/70 rounded-2xl p-4 shadow-md">
+            <p class="text-indigo-400 text-sm font-semibold mb-1">Goals Active</p>
+            <p class="text-gray-200 font-bold text-xl">3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-slate-800 border border-slate-700/60 rounded-3xl shadow-xl p-8 lg:p-10 glass-panel">
+      <div class="mb-6">
+        <p class="text-indigo-300 text-sm font-semibold uppercase tracking-widest">Welcome back</p>
+        <h1 class="text-3xl font-bold text-gray-50 mt-1">Sign in to WalletAI</h1>
+        <p class="text-gray-400 mt-2">Access your dashboard, track income, and stay organized.</p>
+      </div>
+
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-5">
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-indigo-200">Email</label>
+          <input type="email" name="email" [(ngModel)]="formData.email" required [pattern]="emailPattern.source" placeholder="you@example.com"
+            class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium" />
+          <p class="text-xs text-gray-400">Enter a valid email address.</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-indigo-200">Password</label>
+          <input type="password" name="password" [(ngModel)]="formData.password" required
+            [pattern]="passwordPattern.source" minlength="8" placeholder="At least 8 chars, upper/lower/number/symbol"
+            class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium" />
+          <p class="text-xs text-gray-400">Use upper, lower, number, and special character.</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="p-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-200 text-sm">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" [disabled]="loading"
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold shadow-lg shadow-indigo-500/30 transition-all transform hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed">
+          {{ loading ? 'Signing In...' : 'Sign In' }}
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-gray-400 mt-6">
+        Don't have an account?
+        <a routerLink="/register" class="text-indigo-300 font-semibold hover:text-indigo-200">Create one</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+

@@ -1,6 +1,7 @@
 <div class="w-full bg-slate-900 min-h-screen flex justify-center flex-col">
-  <app-dashboard-header class="w-full fixed top-0 z-50"></app-dashboard-header>
-  <div class="w-full mx-auto pt-20">
+  <app-dashboard-header *ngIf="showShell" class="w-full fixed top-0 z-50"></app-dashboard-header>
+
+  <div class="w-full mx-auto" [class.pt-20]="showShell">
     <router-outlet></router-outlet>
   </div>
 </div>

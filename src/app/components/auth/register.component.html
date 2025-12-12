@@ -1,0 +1,190 @@
+<div class="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+    <div class="hidden lg:block">
+      <div class="bg-slate-800/90 border border-slate-700/60 rounded-3xl p-10 shadow-2xl glass-panel">
+        <p class="text-indigo-300 text-sm font-semibold uppercase tracking-widest mb-2">Create account</p>
+        <h2 class="text-3xl font-bold text-white mb-4">Unlock the full WalletAI experience</h2>
+        <p class="text-gray-300 leading-relaxed">
+          Track income, manage goals, and keep every transaction organized with a clean, modern workspace.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 mt-8">
+          <div class="bg-slate-900/70 border border-slate-700 rounded-2xl p-4">
+            <p class="text-indigo-300 text-xs uppercase tracking-widest font-semibold">Theme</p>
+            <p class="text-white font-bold text-lg">Neon Dark</p>
+          </div>
+          <div class="bg-slate-900/70 border border-slate-700 rounded-2xl p-4">
+            <p class="text-emerald-300 text-xs uppercase tracking-widest font-semibold">Security</p>
+            <p class="text-white font-bold text-lg">API Ready</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-slate-800 border border-slate-700/60 rounded-3xl shadow-xl p-8 lg:p-10 glass-panel">
+      <div class="mb-6">
+        <p class="text-indigo-300 text-sm font-semibold uppercase tracking-widest">Get started</p>
+        <h1 class="text-3xl font-bold text-gray-50 mt-1">Create your account</h1>
+        <p class="text-gray-400 mt-2">Set up your profile and jump into the dashboard.</p>
+      </div>
+
+      <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="space-y-5">
+
+        <!-- FULL NAME -->
+          <input 
+          type="text"
+          name="name"
+          [(ngModel)]="formData.name"
+          (blur)="validateName()"   
+          required
+          placeholder="Alex Morgan"
+          class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 
+                focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
+                text-white placeholder-slate-500 transition-all font-medium" />
+
+
+          <p *ngIf="errors.name"
+             class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
+            {{ errors.name }}
+          </p>
+        </div>
+
+        <!-- EMAIL -->
+          <input 
+          type="email"
+          name="email"
+          [(ngModel)]="formData.email"
+          (blur)="validateEmail()"   
+          required
+          placeholder="you@example.com"
+          class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 
+                focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
+                text-white placeholder-slate-500 transition-all font-medium" />
+
+
+          <p *ngIf="errors.email"
+             class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
+            {{ errors.email }}
+          </p>
+        </div>
+
+      <!-- PASSWORD -->
+<div class="flex flex-col gap-2">
+  <label class="text-sm font-medium text-indigo-200">Password</label>
+
+  <!-- PASSWORD -->
+    <input 
+    type="password"
+    name="password"
+    [(ngModel)]="formData.password"
+    (input)="updatePasswordRules()"     
+    (blur)="validatePassword()"         
+    required minlength="8"
+    placeholder="At least 8 chars..."
+    class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 
+          focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
+          text-white placeholder-slate-500 transition-all font-medium" />
+
+
+  <!-- CHECKLIST -->
+  <div class="mt-2 space-y-1">
+    <p class="flex items-center gap-2 text-xs"
+       [class.text-emerald-400]="passwordRules.minLength"
+       [class.text-red-400]="!passwordRules.minLength">
+
+      <span *ngIf="passwordRules.minLength">✔</span>
+      <span *ngIf="!passwordRules.minLength">✖</span>
+      Minimum 8 characters
+    </p>
+
+    <p class="flex items-center gap-2 text-xs"
+       [class.text-emerald-400]="passwordRules.upper"
+       [class.text-red-400]="!passwordRules.upper">
+
+      <span *ngIf="passwordRules.upper">✔</span>
+      <span *ngIf="!passwordRules.upper">✖</span>
+      At least one uppercase letter
+    </p>
+
+    <p class="flex items-center gap-2 text-xs"
+       [class.text-emerald-400]="passwordRules.lower"
+       [class.text-red-400]="!passwordRules.lower">
+
+      <span *ngIf="passwordRules.lower">✔</span>
+      <span *ngIf="!passwordRules.lower">✖</span>
+      At least one lowercase letter
+    </p>
+
+    <p class="flex items-center gap-2 text-xs"
+       [class.text-emerald-400]="passwordRules.number"
+       [class.text-red-400]="!passwordRules.number">
+
+      <span *ngIf="passwordRules.number">✔</span>
+      <span *ngIf="!passwordRules.number">✖</span>
+      At least one number
+    </p>
+
+    <p class="flex items-center gap-2 text-xs"
+       [class.text-emerald-400]="passwordRules.special"
+       [class.text-red-400]="!passwordRules.special">
+
+      <span *ngIf="passwordRules.special">✔</span>
+      <span *ngIf="!passwordRules.special">✖</span>
+      At least one special character
+    </p>
+  </div>
+
+  <p *ngIf="errors.password"
+     class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
+    {{ errors.password }}
+  </p>
+</div>
+
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-indigo-200">Confirm Password</label>
+          <!-- CONFIRM PASSWORD -->
+          <input 
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="formData.confirmPassword"
+          (blur)="validateConfirmPassword()"   
+          required
+          placeholder="Re-enter password"
+          class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 
+                focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
+                text-white placeholder-slate-500 transition-all font-medium" />
+
+
+          <p *ngIf="errors.confirmPassword"
+             class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
+            {{ errors.confirmPassword }}
+          </p>
+        </div>
+
+        <!-- GLOBAL ERROR MESSAGE -->
+        <div *ngIf="errorMessage"
+             class="p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-sm font-medium">
+          {{ errorMessage }}
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" [disabled]="loading"
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 
+                       hover:from-emerald-400 hover:to-indigo-400 text-white font-bold 
+                       shadow-lg shadow-emerald-500/30 transition-all transform 
+                       hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed">
+          {{ loading ? 'Creating Account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-gray-400 mt-6">
+        Already have an account?
+        <a routerLink="/login" class="text-indigo-300 font-semibold hover:text-indigo-200">Sign in</a>
+      </p>
+    </div>
+
+  </div>
+</div>

@@ -4,8 +4,18 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class SharedService {
-    // Hardcoded for now as per requirements/mocking
     userId = 'user1';
+    userName = 'Wallet User';
 
-    constructor() { }
+    setUser(userId: string, name?: string): void {
+        this.userId = userId;
+        if (name) {
+            this.userName = name;
+        }
+    }
+
+    clearUser(): void {
+        this.userId = '';
+        this.userName = 'Wallet User';
+    }
 }
