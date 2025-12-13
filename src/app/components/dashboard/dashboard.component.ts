@@ -7,6 +7,8 @@ import { SharedService } from '../../shared.service';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { User } from '../../models/user.model';
 import { UserDataService } from '../../service/user-data.service';
+import { GoalService } from '../../services/goal.service';
+import { Goal } from '../../models/goal.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +22,10 @@ export class DashboardComponent implements OnInit {
   userId = this.sharedService.userId;
   user!: User;
   transactions: any = [];
+  goals: Goal[] = [];
+  totalGoals = 0;
+  completedGoals = 0;
+  pendingGoals = 0;
   loading = false;
   error: string | null = null;
 
@@ -27,11 +33,13 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private sharedService: SharedService,
-    private userDataService: UserDataService
+    private userDataService: UserDataService,
+    private goalService: GoalService
   ) { }
 
   ngOnInit(): void {
     this.fetchTotalIncome();
+    this.loadGoals();
     // this.transactions = this.userDataService.getUserTransactions();
     this.transactions = [
       {
@@ -51,6 +59,25 @@ export class DashboardComponent implements OnInit {
         created_at: '2025-12-10T08:00:00Z',
       },
     ];
+  }
+
+  loadGoals(): void {
+    this.goalService.getGoals(this.userId).subscribe({
+      next: (response) => {
+        this.goals = response.data;
+        this.calculateGoalStats();
+      },
+      error: (err) => {
+        console.error('Failed to load goals', err);
+        // Optional: set error
+      }
+    });
+  }
+
+  private calculateGoalStats(): void {
+    this.totalGoals = this.goals.length;
+    this.completedGoals = this.goals.filter(g => g.savedAmount >= g.targetAmount).length;
+    this.pendingGoals = this.totalGoals - this.completedGoals;
   }
 
   fetchTotalIncome() {
