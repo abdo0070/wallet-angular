@@ -46,10 +46,10 @@ class GoalController {
 
   static update = asyncWrapper(async (req, res, next) => {
     const { id } = req.params;
-    const { name, targetAmount, savedAmount, deadline } = req.body;
+    const { name, targetAmount, savedAmount, deadline, isCompleted } = req.body;
     const goal = await GoalModel.findByIdAndUpdate(
       id,
-      { name, targetAmount, savedAmount, deadline },
+      { name, targetAmount, savedAmount, deadline, isCompleted },
       { new: true }
     );
     res.json({

@@ -15,6 +15,10 @@ const GoalSchema = new Schema({
     type: Number,
     default: 0,
   },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
   deadline: {
     type: Date,
     required: [true, "Deadline is required"],

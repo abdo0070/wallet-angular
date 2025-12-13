@@ -16,6 +16,12 @@
 
       <form class="space-y-5 relative z-10" (ngSubmit)="saveGoal()">
 
+        @if (error) {
+        <div class="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-sm">
+          {{ error }}
+        </div>
+        }
+
         <div>
           <label class="block text-sm font-medium text-indigo-200 mb-2">Goal Name</label>
           <input type="text" [(ngModel)]="goalName" name="goalName"
@@ -55,17 +61,17 @@
         <li
           class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50 transition-colors">
           <span class="flex items-center gap-2"><i class="pi pi-flag text-indigo-400"></i> Total Goals</span>
-          <span class="font-bold text-white text-lg">3</span>
+          <span class="font-bold text-white text-lg">{{ totalGoals }}</span>
         </li>
         <li
           class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors">
           <span class="flex items-center gap-2"><i class="pi pi-check-circle text-emerald-400"></i> Completed</span>
-          <span class="font-bold text-emerald-400 neon-text-green text-lg">1</span>
+          <span class="font-bold text-emerald-400 neon-text-green text-lg">{{ completedGoals }}</span>
         </li>
         <li
           class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors">
           <span class="flex items-center gap-2"><i class="pi pi-clock text-amber-400"></i> In Progress</span>
-          <span class="font-bold text-amber-400 text-lg">2</span>
+          <span class="font-bold text-amber-400 text-lg">{{ inProgressGoals }}</span>
         </li>
       </ul>
     </div>
@@ -79,6 +85,7 @@
       <table class="min-w-full table-auto">
         <thead>
           <tr class="bg-slate-900/50 text-left border-b border-slate-700">
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider w-12">Complete</th>
             <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Goal</th>
             <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Target</th>
             <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Saved</th>
@@ -89,6 +96,12 @@
         <tbody class="text-gray-300 text-sm">
           @for (goal of goals; track goal.id) {
           <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
+            <td class="px-4 py-3">
+              <input type="checkbox" 
+                     [checked]="goal.isCompleted" 
+                     (change)="toggleComplete(goal)"
+                     class="w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer" />
+            </td>
             <td class="px-4 py-3 font-medium">{{ goal.name }}</td>
             <td class="px-4 py-3">${{ goal.targetAmount }}</td>
             <td class="px-4 py-3 text-emerald-400 font-bold">${{ goal.savedAmount }}</td>

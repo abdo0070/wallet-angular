@@ -92,9 +92,14 @@ export class DashboardComponent implements OnInit {
   }
 
   private calculateGoalStats(): void {
-    if (!this.goals) return;
+    if (!this.goals) {
+      this.totalGoals = 0;
+      this.completedGoals = 0;
+      this.pendingGoals = 0;
+      return;
+    }
     this.totalGoals = this.goals.length;
-    this.completedGoals = this.goals.filter(g => (g.savedAmount || 0) >= g.targetAmount).length;
+    this.completedGoals = this.goals.filter(g => g.isCompleted === true).length;
     this.pendingGoals = this.totalGoals - this.completedGoals;
   }
 

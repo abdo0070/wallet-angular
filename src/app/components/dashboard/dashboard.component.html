@@ -110,10 +110,28 @@
     </div>
 
     <div class="grid gap-6 md:grid-cols-3 mb-8">
-      <!-- Insights -->
+      <!-- Goals Progress Summary -->
       <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg h-full">
-        <h3 class="text-xl font-bold text-gray-100 mb-4">Insights</h3>
-        <p class="text-gray-400">Your financial insights will appear here.</p>
+        <h3 class="text-xl font-bold text-gray-100 mb-4">Goals Progress</h3>
+        <p class="text-gray-400 text-sm mb-4">Your financial goals summary</p>
+
+        <ul class="space-y-3 text-gray-300">
+          <li
+            class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50 transition-colors">
+            <span class="flex items-center gap-2"><i class="pi pi-flag text-indigo-400"></i> Total Goals</span>
+            <span class="font-bold text-white text-lg">{{ totalGoals }}</span>
+          </li>
+          <li
+            class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors">
+            <span class="flex items-center gap-2"><i class="pi pi-check-circle text-emerald-400"></i> Completed</span>
+            <span class="font-bold text-emerald-400 text-lg">{{ completedGoals }}</span>
+          </li>
+          <li
+            class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors">
+            <span class="flex items-center gap-2"><i class="pi pi-clock text-amber-400"></i> In Progress</span>
+            <span class="font-bold text-amber-400 text-lg">{{ pendingGoals }}</span>
+          </li>
+        </ul>
       </div>
 
       <!-- TRANSACTIONS TABLE -->
