@@ -22,7 +22,9 @@ export class GoalSettingComponent implements OnInit {
   error: string | null = null;
   editingGoal: Goal | null = null;
 
-  constructor(private goalService: GoalService, private sharedService: SharedService) {}
+  get userId() { return this.sharedService.userId; }
+
+  constructor(private goalService: GoalService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.loadGoals();
@@ -31,7 +33,7 @@ export class GoalSettingComponent implements OnInit {
   loadGoals(): void {
     this.loading = true;
     this.error = null;
-    this.goalService.getGoals(this.sharedService.userId).subscribe({
+    this.goalService.getGoals(this.userId).subscribe({
       next: (response) => {
         this.goals = response.data;
         this.loading = false;
@@ -53,7 +55,7 @@ export class GoalSettingComponent implements OnInit {
     this.error = null;
 
     const goalData = {
-      user_id: this.sharedService.userId,
+      user_id: this.userId,
       name: this.goalName,
       targetAmount: this.targetAmount!,
       deadline: this.deadline

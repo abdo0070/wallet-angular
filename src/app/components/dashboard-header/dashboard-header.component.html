@@ -1,9 +1,6 @@
 <header
     class="sticky top-0 glass-panel shadow-lg px-6 md:px-10 py-4 flex justify-between items-center z-50 border-b border-indigo-500/20">
-    <button onclick="toggleSidebar()"
-        class="md:hidden text-2xl text-indigo-400 hover:text-indigo-300 transition-colors">&#9776;</button>
-
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 cursor-pointer" routerLink="/dashboard">
         <div
             class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg neon-box-blue">
             <span class="font-bold text-white text-xl">W</span>
@@ -13,14 +10,28 @@
             WalletAI</h1>
     </div>
 
-    <div class="flex items-center space-x-4">
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex items-center space-x-6">
+        <a routerLink="/dashboard" routerLinkActive="text-blue-400 neon-text-blue" 
+           class="text-gray-300 hover:text-white transition-colors font-medium">Dashboard</a>
+        <a routerLink="/income" routerLinkActive="text-blue-400 neon-text-blue" 
+           class="text-gray-300 hover:text-white transition-colors font-medium">Income</a>
+        <a routerLink="/goals" routerLinkActive="text-blue-400 neon-text-blue" 
+           class="text-gray-300 hover:text-white transition-colors font-medium">Goals</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
         <div class="hidden sm:flex flex-col items-end">
-            <span class="text-gray-200 font-medium">Alex Morgan</span>
+            <span class="text-gray-200 font-medium">{{ userName }}</span>
             <span class="text-xs text-indigo-400">Premium Member</span>
         </div>
         <div
-            class="w-10 h-10 rounded-full bg-slate-700 border-2 border-indigo-500 overflow-hidden shadow-lg neon-box-blue cursor-pointer hover:border-indigo-400 transition-colors">
+            class="w-10 h-10 rounded-full bg-slate-700 border-2 border-indigo-500 overflow-hidden shadow-lg neon-box-blue hover:border-indigo-400 transition-colors">
             <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Avatar" class="w-full h-full object-cover">
         </div>
+        <button (click)="logout()" 
+            class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+            Logout
+        </button>
     </div>
 </header>

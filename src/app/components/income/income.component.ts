@@ -47,7 +47,7 @@ export interface Category {
     styleUrls: ['./income.component.scss']
 })
 export class IncomeComponent implements OnInit {
-    userId = this.sharedservice.userId;
+    get userId() { return this.sharedservice.userId; }
 
     // UI State
     showDialog: boolean = false;
@@ -113,7 +113,7 @@ export class IncomeComponent implements OnInit {
     editIncome(income: Income) {
         this.incomeData = { name: income.name, amount: income.amount };
         // Find category by value (backend stores lowercase like 'salary', 'freelance')
-        this.selectedCategory = this.categories.find(c => 
+        this.selectedCategory = this.categories.find(c =>
             c.value.toLowerCase() === income.category.toLowerCase()
         );
         this.editingIncome = income;
@@ -236,7 +236,7 @@ export class IncomeComponent implements OnInit {
     }
 
     getCategoryDisplayName(category: string): string {
-        const categoryObj = this.categories.find(c => 
+        const categoryObj = this.categories.find(c =>
             c.value.toLowerCase() === category.toLowerCase()
         );
         return categoryObj ? categoryObj.name : category.charAt(0).toUpperCase() + category.slice(1);

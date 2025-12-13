@@ -9,16 +9,12 @@ import { Goal } from '../models/goal.model';
 })
 export class GoalService {
   private readonly API_BASE = 'http://localhost:3000';
-  private token = ''; // Should be set from auth service or localStorage
-
-  constructor(private http: HttpClient) {
-    // Get token from localStorage or auth service
-    this.token = localStorage.getItem('token') || '';
-  }
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') || '';
     return new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
   }

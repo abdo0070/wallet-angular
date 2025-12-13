@@ -51,8 +51,8 @@ export class LoginComponent {
 
     this.authService.login(this.formData).subscribe({
       next: (res) => {
-        const userId = res.userId || 'user1';
-        this.sharedService.setUser(userId, res.name);
+        const userId = res.userId || '';
+        this.sharedService.setUser(userId, res.name, res.token);
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {

@@ -4,9 +4,11 @@ const GoalModel = require("../models/GoalModel");
 class GoalController {
   static getAll = asyncWrapper(async (req, res, next) => {
     const { userId } = req.params;
+    console.log(`[GoalController] getAll called for userId: ${userId}`);
     const goals = await GoalModel.find({
       user_id: userId,
     });
+    console.log(`[GoalController] Found ${goals.length} goals`);
     res.json({
       data: goals,
     });
@@ -22,17 +24,24 @@ class GoalController {
 
   static create = asyncWrapper(async (req, res, next) => {
     const { user_id, name, targetAmount, savedAmount, deadline } = req.body;
-    const goal = await GoalModel.create({
-      user_id,
-      name,
-      targetAmount,
-      savedAmount: savedAmount || 0,
-      deadline,
-    });
-    res.json({
-      msg: "SUCCESS",
-      data: goal,
-    });
+    console.log(`[GoalController] create called with body:`, req.body);
+    try {
+      const goal = await GoalModel.create({
+        user_id,
+        name,
+        targetAmount,
+        savedAmount: savedAmount || 0,
+        deadline,
+      });
+      console.log(`[GoalController] Goal created:`, goal._id);
+      res.json({
+        msg: "SUCCESS",
+        data: goal,
+      });
+    } catch (error) {
+      console.error("[GoalController] create error:", error);
+      res.status(400).json({ msg: error.message });
+    }
   });
 
   static update = asyncWrapper(async (req, res, next) => {

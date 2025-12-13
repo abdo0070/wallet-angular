@@ -18,23 +18,19 @@ export interface Income {
 })
 export class IncomeService {
     private readonly API_BASE = 'http://localhost:3000';
-    private token = '';
-
     constructor(
         private http: HttpClient,
         private sharedService: SharedService
-    ) {
-        // Get token from localStorage
-        this.token = localStorage.getItem('token') || '';
-    }
+    ) { }
 
     get userId() {
         return this.sharedService.userId;
     }
 
     private getHeaders(): HttpHeaders {
+        const token = this.sharedService.token || localStorage.getItem('token') || '';
         return new HttpHeaders({
-            'Authorization': `Bearer ${this.token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         });
     }

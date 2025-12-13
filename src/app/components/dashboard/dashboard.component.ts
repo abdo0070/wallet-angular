@@ -9,6 +9,7 @@ import { User } from '../../models/user.model';
 import { UserDataService } from '../../service/user-data.service';
 import { GoalService } from '../../services/goal.service';
 import { Goal } from '../../models/goal.model';
+import { IncomeService } from '../../components/income/income.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,9 @@ import { Goal } from '../../models/goal.model';
 })
 export class DashboardComponent implements OnInit {
   totalIncome: number = 0;
-  userId = this.sharedService.userId;
+  totalBalance: number = 0;
+  get userId() { return this.sharedService.userId; } // Dynamic access
+
   user!: User;
   transactions: any = [];
   goals: Goal[] = [];
@@ -34,13 +37,15 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient,
     private sharedService: SharedService,
     private userDataService: UserDataService,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private incomeService: IncomeService
   ) { }
 
   ngOnInit(): void {
     this.fetchTotalIncome();
     this.loadGoals();
-    // this.transactions = this.userDataService.getUserTransactions();
+
+    // Static transactions text (demo data for now)
     this.transactions = [
       {
         id: 'tx_001',
@@ -64,33 +69,39 @@ export class DashboardComponent implements OnInit {
   loadGoals(): void {
     this.goalService.getGoals(this.userId).subscribe({
       next: (response) => {
-        this.goals = response.data;
+        // Handle possible response format (data array vs direct array)
+        this.goals = response.data || response;
         this.calculateGoalStats();
       },
       error: (err) => {
         console.error('Failed to load goals', err);
-        // Optional: set error
       }
     });
   }
 
   private calculateGoalStats(): void {
+    if (!this.goals) return;
     this.totalGoals = this.goals.length;
-    this.completedGoals = this.goals.filter(g => g.savedAmount >= g.targetAmount).length;
+    this.completedGoals = this.goals.filter(g => (g.savedAmount || 0) >= g.targetAmount).length;
     this.pendingGoals = this.totalGoals - this.completedGoals;
   }
 
   fetchTotalIncome() {
-    const url = `https://budget-tracking-website-8ec2c-default-rtdb.europe-west1.firebasedatabase.app/userData/${this.userId}/incomes.json`;
-    this.http.get<any>(url).subscribe(data => {
-      if (data) {
-        let total = 0;
-        Object.keys(data).forEach(category => {
-          Object.keys(data[category]).forEach(item => {
-            total += data[category][item].amount;
-          });
-        });
-        this.totalIncome = total;
+    this.incomeService.getTotalIncome().subscribe({
+      next: (response: any) => {
+        // Handle response format from IncomeController.getTotal {msg, data: {totalIncome}}
+        // Or if service returns raw data. 
+        // Let's assume service returns { totalIncome: number } or similar.
+        // Checking backend IncomeController.getTotal: res.json({ msg: "SUCCESS", data: { totalIncome } })
+        // Checking IncomeService likely maps .data.
+
+        // Safely handle structure
+        const income = response.data?.totalIncome !== undefined ? response.data.totalIncome : (response.totalIncome || response);
+        this.totalIncome = Number(income) || 0;
+        this.totalBalance = this.totalIncome;
+      },
+      error: (err) => {
+        console.error('Failed to load total income', err);
       }
     });
   }
@@ -124,24 +135,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  addMoney(): void {
-    // new page 
-    console.log('Add Money clicked');
-  }
-
-  sendMoney(): void {
-    console.log('Send Money clicked');
-  }
-
-  payBills(): void {
-    console.log('Pay Bills clicked');
-  }
-
-  withdraw(): void {
-    console.log('Withdraw clicked');
-  }
-
-  exchange(): void {
-    console.log('Exchange clicked');
-  }
+  addMoney(): void { console.log('Add Money clicked'); }
+  sendMoney(): void { console.log('Send Money clicked'); }
+  payBills(): void { console.log('Pay Bills clicked'); }
+  withdraw(): void { console.log('Withdraw clicked'); }
+  exchange(): void { console.log('Exchange clicked'); }
 }

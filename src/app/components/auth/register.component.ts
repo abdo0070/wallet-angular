@@ -126,8 +126,8 @@ export class RegisterComponent {
 
     this.authService.register(this.formData).subscribe({
       next: (res: AuthResponse) => {
-        const userId = res.userId || 'user1';
-        this.sharedService.setUser(userId, res.name || this.formData.name);
+        const userId = res.userId || '';
+        this.sharedService.setUser(userId, res.name || this.formData.name, res.token);
         this.router.navigate(['/login']);
       },
       error: (err) => {
