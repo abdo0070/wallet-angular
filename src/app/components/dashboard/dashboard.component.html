@@ -65,26 +65,14 @@
           </thead>
 
           <tbody class="text-gray-700 text-sm">
+            @for (tran of transactions; track tran.id){
             <tr class="border-b">
-              <td class="px-4 py-3">Amazon Purchase</td>
-              <td class="px-4 py-3">Debit</td>
-              <td class="px-4 py-3 text-red-600">- $120.50</td>
-              <td class="px-4 py-3">Dec 12, 2025</td>
+              <td class="px-4 py-3">{{tran.name}}</td>
+              <td class="px-4 py-3">{{tran.description}}</td>
+              <td class="px-4 py-3 text-red-600">{{tran.balance}}</td>
+              <td class="px-4 py-3">{{tran.created_at}}</td>
             </tr>
-
-            <tr class="border-b">
-              <td class="px-4 py-3">Salary</td>
-              <td class="px-4 py-3">Credit</td>
-              <td class="px-4 py-3 text-green-600">+ $4,500.00</td>
-              <td class="px-4 py-3">Dec 10, 2025</td>
-            </tr>
-
-            <tr class="border-b">
-              <td class="px-4 py-3">Starbucks</td>
-              <td class="px-4 py-3">Debit</td>
-              <td class="px-4 py-3 text-red-600">- $8.90</td>
-              <td class="px-4 py-3">Dec 9, 2025</td>
-            </tr>
+            }
           </tbody>
         </table>
       </div>

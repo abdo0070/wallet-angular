@@ -1,0 +1,26 @@
+{
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1 555 123 4567",
+    "avatar_url": "https://i.pravatar.cc/150?img=12",
+    "created_at": "2025-01-15T09:20:00Z"
+  },
+  "transactions": [
+    {
+      "id": "tx_001",
+      "name": "Amazon Purchase",
+      "description": "Online shopping - electronics",
+      "user_id": 1,
+      "created_at": "2025-12-12T10:45:30Z"
+    },
+    {
+      "id": "tx_002",
+      "name": "Salary Payment",
+      "description": "Monthly salary credited",
+      "user_id": 1,
+      "created_at": "2025-12-10T08:00:00Z"
+    }
+  ]
+}
