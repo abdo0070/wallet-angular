@@ -21,3 +21,4 @@ describe('GoalSettingComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
