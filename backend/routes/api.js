@@ -2,6 +2,7 @@ const AuthController = require("../controllers/Auth");
 const TransactionController = require("../controllers/Transaction");
 const UserController = require("../controllers/Users");
 const GoalController = require("../controllers/Goal");
+const IncomeController = require("../controllers/Income");
 
 const router = require("express").Router();
 const verifyJWT = require("../middleware/jwtVerify");
@@ -31,5 +32,13 @@ router.get("/goals/single/:id", verifyJWT, GoalController.getGoal);
 router.post("/goals", verifyJWT, GoalController.create);
 router.put("/goals/:id", verifyJWT, GoalController.update);
 router.delete("/goals/:id", verifyJWT, GoalController.delete);
+
+// Incomes
+router.get("/incomes/:userId", verifyJWT, IncomeController.getAll);
+router.get("/incomes/single/:id", verifyJWT, IncomeController.getIncome);
+router.get("/incomes/total/:userId", verifyJWT, IncomeController.getTotal);
+router.post("/incomes", verifyJWT, IncomeController.create);
+router.put("/incomes/:id", verifyJWT, IncomeController.update);
+router.delete("/incomes/:id", verifyJWT, IncomeController.delete);
 
 module.exports = router;

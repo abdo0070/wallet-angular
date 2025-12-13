@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Wallet": "node dist/wallet/server/server.mjs"
+    "serve:ssr:Wallet": "node dist/wallet/server/server.mjs",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "ng serve",
+    "backend": "cd backend && npm run dev"
   },
   "private": true,
   "dependencies": {

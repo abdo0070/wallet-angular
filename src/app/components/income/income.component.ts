@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { IncomeService } from './income.service';
@@ -18,6 +17,7 @@ import { RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
 
 export interface Income {
+    id?: string;
     name: string;
     category: string;
     amount: number;
@@ -72,7 +72,6 @@ export class IncomeComponent implements OnInit {
 
     constructor(
         private messageService: MessageService,
-        private http: HttpClient,
         private router: Router,
         private sharedservice: SharedService,
         private incomeService: IncomeService
@@ -83,22 +82,22 @@ export class IncomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadIncomesFromFirebase();
+        this.loadIncomes();
     }
 
-    loadIncomesFromFirebase() {
-        const url = `https://budget-tracking-website-8ec2c-default-rtdb.europe-west1.firebasedatabase.app/userData/${this.userId}/incomes.json`;
-
-        this.http.get<any>(url).subscribe(data => {
-            if (data) {
-                this.incomes = [];
-                Object.keys(data).forEach(category => {
-                    Object.keys(data[category]).forEach(item => {
-                        const amount = data[category][item].amount;
-                        this.incomes.push({ name: item, category, amount });
-                    });
-                });
+    loadIncomes() {
+        this.incomeService.getAllIncomes().subscribe({
+            next: (incomes) => {
+                this.incomes = incomes;
                 this.updateTotalIncomeAmount();
+            },
+            error: (error) => {
+                console.error('Failed to load incomes:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to load incomes. Please try again.'
+                });
             }
         });
     }
@@ -113,7 +112,10 @@ export class IncomeComponent implements OnInit {
 
     editIncome(income: Income) {
         this.incomeData = { name: income.name, amount: income.amount };
-        this.selectedCategory = this.categories.find(c => c.name === income.category);
+        // Find category by value (backend stores lowercase like 'salary', 'freelance')
+        this.selectedCategory = this.categories.find(c => 
+            c.value.toLowerCase() === income.category.toLowerCase()
+        );
         this.editingIncome = income;
         this.isEditMode = true;
         this.showDialog = true;
@@ -123,35 +125,73 @@ export class IncomeComponent implements OnInit {
         if (incomeForm.valid && this.selectedCategory) {
             const { name, amount } = incomeForm.value;
 
-            // If Edit Mode: Delete original if it exists
-            if (this.isEditMode && this.editingIncome) {
-                const index = this.incomes.findIndex(i => i.name === this.editingIncome!.name && i.category === this.editingIncome!.category);
-                if (index !== -1) {
-                    this.incomes.splice(index, 1);
-                    // Fire and forget delete on backend (since we will overwrite or create new)
-                    this.http.delete(`https://budget-tracking-website-8ec2c-default-rtdb.europe-west1.firebasedatabase.app/userData/${this.userId}/incomes/${this.editingIncome.category}/${this.editingIncome.name}.json`).subscribe();
-                }
-            }
-
-            // Create new Income object
-            const formData = {
+            const incomeData = {
+                user_id: this.userId,
                 name: name,
-                category: this.selectedCategory.name,
+                category: this.selectedCategory.value, // Use value (lowercase: 'salary', 'freelance', etc.)
                 amount: amount
             };
 
-            this.incomes.push(formData);
-
-            this.http.put(`https://budget-tracking-website-8ec2c-default-rtdb.europe-west1.firebasedatabase.app/userData/${this.userId}/incomes/${this.selectedCategory.name}/${name}.json`, formData)
-                .subscribe(res => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: this.isEditMode ? 'Income updated successfully' : 'Income added successfully' });
-                    this.updateTotalIncomeAmount();
+            if (this.isEditMode && this.editingIncome?.id) {
+                // Update existing income
+                this.incomeService.updateIncome(this.editingIncome.id, {
+                    name: incomeData.name,
+                    category: incomeData.category,
+                    amount: incomeData.amount
+                }).subscribe({
+                    next: (updatedIncome) => {
+                        const index = this.incomes.findIndex(i => i.id === updatedIncome.id);
+                        if (index !== -1) {
+                            this.incomes[index] = updatedIncome;
+                        }
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Income updated successfully'
+                        });
+                        this.updateTotalIncomeAmount();
+                        this.showDialog = false;
+                        incomeForm.resetForm();
+                    },
+                    error: (error) => {
+                        console.error('Failed to update income:', error);
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to update income. Please try again.'
+                        });
+                    }
                 });
-
-            this.showDialog = false;
-            incomeForm.resetForm();
+            } else {
+                // Create new income
+                this.incomeService.createIncome(incomeData).subscribe({
+                    next: (newIncome) => {
+                        this.incomes.push(newIncome);
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Income added successfully'
+                        });
+                        this.updateTotalIncomeAmount();
+                        this.showDialog = false;
+                        incomeForm.resetForm();
+                    },
+                    error: (error) => {
+                        console.error('Failed to create income:', error);
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to add income. Please try again.'
+                        });
+                    }
+                });
+            }
         } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill all required fields' });
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill all required fields'
+            });
         }
     }
 
@@ -161,16 +201,30 @@ export class IncomeComponent implements OnInit {
     }
 
     deleteIncome(income: Income) {
-        const index = this.incomes.findIndex(i => i.name === income.name && i.category === income.category);
-        if (index !== -1) {
-            this.incomes.splice(index, 1);
-
-            this.http.delete(`https://budget-tracking-website-8ec2c-default-rtdb.europe-west1.firebasedatabase.app/userData/${this.userId}/incomes/${income.category}/${income.name}.json`)
-                .subscribe(res => {
-                    this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'Income deleted successfully' });
-                    this.updateTotalIncomeAmount();
-                });
+        if (!income.id) {
+            console.error('Cannot delete income without ID');
+            return;
         }
+
+        this.incomeService.deleteIncome(income.id).subscribe({
+            next: () => {
+                this.incomes = this.incomes.filter(i => i.id !== income.id);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Deleted',
+                    detail: 'Income deleted successfully'
+                });
+                this.updateTotalIncomeAmount();
+            },
+            error: (error) => {
+                console.error('Failed to delete income:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to delete income. Please try again.'
+                });
+            }
+        });
     }
 
     getTotalIncomeAmount(): number {
@@ -179,5 +233,12 @@ export class IncomeComponent implements OnInit {
             totalAmount += income.amount;
         }
         return totalAmount;
+    }
+
+    getCategoryDisplayName(category: string): string {
+        const categoryObj = this.categories.find(c => 
+            c.value.toLowerCase() === category.toLowerCase()
+        );
+        return categoryObj ? categoryObj.name : category.charAt(0).toUpperCase() + category.slice(1);
     }
 }
