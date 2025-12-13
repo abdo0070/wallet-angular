@@ -1,1 +1,185 @@
-<p>reporting works!</p>
+<div class="w-full flex justify-center flex-col">
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="w-11/12 max-w-7xl mx-auto pt-6 min-h-screen pb-24 md:pb-20">
+
+    <!-- HEADER -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-100">Financial Reports</h1>
+      <p class="text-gray-400 mt-1">Comprehensive analysis of your financial data.</p>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="mb-6 flex flex-wrap gap-4">
+      <div class="flex items-center gap-2">
+        <label class="text-gray-300 text-sm font-medium">Period:</label>
+        <select [(ngModel)]="selectedPeriod"
+          class="bg-slate-700 border border-slate-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="all">All Time</option>
+          <option value="year">This Year</option>
+          <option value="month">This Month</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-gray-300 text-sm font-medium">Type:</label>
+        <select [(ngModel)]="selectedType"
+          class="bg-slate-700 border border-slate-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="all">All</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid gap-6 md:grid-cols-3 mb-8">
+      <!-- Total Income -->
+      <div class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent"></div>
+        <div class="relative z-10">
+          <h3 class="text-lg opacity-90 font-medium">Total Income</h3>
+          <p class="text-4xl font-bold mt-2 text-emerald-400">{{ totalIncome | currency }}</p>
+        </div>
+      </div>
+
+      <!-- Total Expense -->
+      <div class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent"></div>
+        <div class="relative z-10">
+          <h3 class="text-lg opacity-90 font-medium">Total Expense</h3>
+          <p class="text-4xl font-bold mt-2 text-red-400">{{ totalExpense | currency }}</p>
+        </div>
+      </div>
+
+      <!-- Net Balance -->
+      <div class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent"></div>
+        <div class="relative z-10">
+          <h3 class="text-lg opacity-90 font-medium">Net Balance</h3>
+          <p class="text-4xl font-bold mt-2" [class.text-emerald-400]="balance >= 0" [class.text-red-400]="balance < 0">
+            {{ balance | currency }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORY BREAKDOWN -->
+    <div class="grid gap-6 md:grid-cols-2 mb-8">
+      <!-- Category Summary -->
+      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+        <h3 class="text-xl font-bold text-gray-100 mb-4">Category Breakdown</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr class="border-b border-slate-700">
+                <th class="text-left px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Category</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Income</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Expense</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Net</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-300 text-sm">
+              @for (cat of categorySummaries; track cat.category) {
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30">
+                <td class="px-4 py-3 font-medium">{{ cat.category }}</td>
+                <td class="px-4 py-3 text-right text-emerald-400">{{ cat.income | currency }}</td>
+                <td class="px-4 py-3 text-right text-red-400">{{ cat.expense | currency }}</td>
+                <td class="px-4 py-3 text-right font-semibold" [class.text-emerald-400]="cat.net >= 0" [class.text-red-400]="cat.net < 0">
+                  {{ cat.net | currency }}
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+          @if (categorySummaries.length === 0) {
+          <div class="text-center py-8 text-gray-400">No category data available.</div>
+          }
+        </div>
+      </div>
+
+      <!-- Monthly Summary -->
+      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+        <h3 class="text-xl font-bold text-gray-100 mb-4">Monthly Summary</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr class="border-b border-slate-700">
+                <th class="text-left px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Month</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Income</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Expense</th>
+                <th class="text-right px-4 py-3 text-gray-400 text-xs uppercase font-semibold">Net</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-300 text-sm">
+              @for (month of monthlySummaries; track month.month) {
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30">
+                <td class="px-4 py-3 font-medium">{{ month.month }}</td>
+                <td class="px-4 py-3 text-right text-emerald-400">{{ month.income | currency }}</td>
+                <td class="px-4 py-3 text-right text-red-400">{{ month.expense | currency }}</td>
+                <td class="px-4 py-3 text-right font-semibold" [class.text-emerald-400]="month.net >= 0" [class.text-red-400]="month.net < 0">
+                  {{ month.net | currency }}
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+          @if (monthlySummaries.length === 0) {
+          <div class="text-center py-8 text-gray-400">No monthly data available.</div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACTION HISTORY -->
+    <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-gray-100">Transaction History</h3>
+        <button (click)="navigateTo('dashboard')" class="text-indigo-400 font-semibold text-sm hover:text-indigo-300 hover:underline">
+          Back to Dashboard
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+          <thead>
+            <tr class="bg-slate-900/50 text-left border-b border-slate-700">
+              <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Date</th>
+              <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Category</th>
+              <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Description</th>
+              <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Type</th>
+              <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-300 text-sm">
+            @for (tran of getFilteredTransactions(); track tran._id || tran.id) {
+            <tr class="border-b transition hover:bg-slate-700/30">
+              <td class="px-4 py-3 text-gray-400">{{ tran.created_at | date:'shortDate' }}</td>
+              <td class="px-4 py-3">{{ tran.category || 'Uncategorized' }}</td>
+              <td class="px-4 py-3">{{ tran.description || tran.name || 'N/A' }}</td>
+              <td class="px-4 py-3">
+                <span [class.text-emerald-400]="tran.type === 'income'" [class.text-red-400]="tran.type === 'expense'"
+                  class="uppercase text-xs font-bold px-2 py-1 rounded bg-slate-700">
+                  {{ tran.type }}
+                </span>
+              </td>
+              <td class="px-4 py-3 font-mono" [class.text-emerald-400]="tran.type === 'income'"
+                [class.text-red-400]="tran.type === 'expense'">
+                {{ tran.type === 'income' ? '+' : '-' }} {{ (tran.balance || tran.amount || 0) | currency }}
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+        @if (getFilteredTransactions().length === 0 && !loading) {
+        <div class="text-center py-8 text-gray-400">No transactions found.</div>
+        }
+        @if (loading) {
+        <div class="text-center py-8 text-gray-400">Loading...</div>
+        }
+        @if (error) {
+        <div class="text-center py-8 text-red-400">{{ error }}</div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

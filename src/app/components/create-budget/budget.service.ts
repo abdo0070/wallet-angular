@@ -153,5 +153,35 @@ export class BudgetService {
             map(() => void 0)
         );
     }
+
+    // Category management methods
+    addCategory(categories: BudgetCategory[], category: BudgetCategory): BudgetCategory[] {
+        const updatedCategories = [...categories];
+        updatedCategories.push({
+            name: category.name.trim(),
+            limit: category.limit
+        });
+        return updatedCategories;
+    }
+
+    deleteCategory(categories: BudgetCategory[], index: number): BudgetCategory[] {
+        const updatedCategories = [...categories];
+        updatedCategories.splice(index, 1);
+        return updatedCategories;
+    }
+
+    // Calculation methods
+    calculateTotalBudget(categories: BudgetCategory[]): number {
+        return categories.reduce((sum, item) => sum + item.limit, 0);
+    }
+
+    calculateRemaining(totalIncome: number, totalBudget: number): number {
+        return totalIncome - totalBudget;
+    }
+
+    // Validate category before adding
+    validateCategory(name: string | null, limit: number | null): boolean {
+        return !!(name && limit !== null && limit > 0);
+    }
 }
 

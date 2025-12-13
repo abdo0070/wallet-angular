@@ -1,7 +1,12 @@
 export interface Transaction {
-  id: string;
-  name: string;
-  description: string;
-  user_id: Number;
-  created_at: string;
+  _id?: string;
+  id?: string;
+  name?: string;
+  description?: string;
+  user_id?: string | Number;
+  created_at?: string;
+  type?: 'income' | 'expense';
+  category?: string;
+  balance?: number;
+  amount?: number;
 }

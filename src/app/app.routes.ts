@@ -6,6 +6,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/auth/login.component';
 import { RegisterComponent } from './components/auth/register.component';
 import { CreateBudgetComponent } from './components/create-budget/create-budget.component';
+import { ReportingComponent } from './components/reporting/reporting.component';
 
 import { GoalSettingComponent } from './components/goal-setting/goal-setting.component';
 
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'expense', component: ExpenseComponent },
     { path: 'budget', component: CreateBudgetComponent },
     { path: 'goals', component: GoalSettingComponent },
+    { path: 'reporting', component: ReportingComponent },
     { path: '**', redirectTo: 'login' }
 ];

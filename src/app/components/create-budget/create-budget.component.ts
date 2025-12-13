@@ -121,10 +121,10 @@ export class CreateBudgetComponent implements OnInit {
   }
 
   saveNewCategory() {
-    if (this.newCategoryName && this.newCategoryLimit && this.newCategoryLimit > 0) {
-      this.addedCategories.push({
-        name: this.newCategoryName.trim(),
-        limit: this.newCategoryLimit,
+    if (this.budgetService.validateCategory(this.newCategoryName, this.newCategoryLimit)) {
+      this.addedCategories = this.budgetService.addCategory(this.addedCategories, {
+        name: this.newCategoryName,
+        limit: this.newCategoryLimit!,
       });
 
       this.updateSummary();
@@ -139,15 +139,12 @@ export class CreateBudgetComponent implements OnInit {
   }
 
   updateSummary() {
-    this.totalBudget = this.addedCategories.reduce(
-      (sum, item) => sum + item.limit,
-      0
-    );
-    this.remaining = this.totalIncome - this.totalBudget;
+    this.totalBudget = this.budgetService.calculateTotalBudget(this.addedCategories);
+    this.remaining = this.budgetService.calculateRemaining(this.totalIncome, this.totalBudget);
   }
 
   deleteCategory(index: number) {
-    this.addedCategories.splice(index, 1);
+    this.addedCategories = this.budgetService.deleteCategory(this.addedCategories, index);
     this.updateSummary();
   }
 
@@ -177,7 +174,7 @@ export class CreateBudgetComponent implements OnInit {
       month: this.selectedMonth,
       year: this.currentYear,
       categories: this.addedCategories,
-      totalAmount: this.totalBudget,
+      totalAmount: this.budgetService.calculateTotalBudget(this.addedCategories),
     };
 
     if (this.existingBudgetId) {
