@@ -7,12 +7,16 @@
 
   <!-- GOAL CREATION + SUMMARY -->
   <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
-    <!-- Create New Goal -->
+
+    <!-- CREATE GOAL -->
     <div
       class="md:col-span-2 bg-gradient-to-br from-indigo-900 to-slate-800 border border-indigo-500/20 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
       <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
-      <h3 class="text-xl font-semibold relative z-10 mb-1">Create New Goal</h3>
-      <p class="text-indigo-300 text-sm mb-5 relative z-10">Set your financial targets and track progress</p>
+
+      <h3 class="text-xl font-semibold mb-1 relative z-10">Create New Goal</h3>
+      <p class="text-indigo-300 text-sm mb-5 relative z-10">
+        Set your financial targets and track progress
+      </p>
 
       <form class="space-y-5 relative z-10" (ngSubmit)="saveGoal()">
 
@@ -24,27 +28,40 @@
 
         <div>
           <label class="block text-sm font-medium text-indigo-200 mb-2">Goal Name</label>
-          <input type="text" [(ngModel)]="goalName" name="goalName"
+          <input
+            type="text"
+            [(ngModel)]="goalName"
+            name="goalName"
+            placeholder="e.g., Buy a Car, Vacation Fund"
             class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
-            placeholder="e.g., Buy a Car, Vacation Fund" />
+          />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-indigo-200 mb-2">Target Amount ($)</label>
-            <input type="number" [(ngModel)]="targetAmount" name="targetAmount"
+            <input
+              type="number"
+              [(ngModel)]="targetAmount"
+              name="targetAmount"
+              placeholder="5,000"
               class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
-              placeholder="5,000" />
+            />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-indigo-200 mb-2">Target Deadline</label>
-            <input type="date" [(ngModel)]="deadline" name="deadline"
-              class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium [color-scheme:dark]" />
+            <input
+              type="date"
+              [(ngModel)]="deadline"
+              name="deadline"
+              class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white focus:outline-none transition-all font-medium [color-scheme:dark]"
+            />
           </div>
         </div>
 
-        <button type="submit"
+        <button
+          type="submit"
           class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white px-8 py-3 rounded-xl shadow-lg shadow-indigo-500/30 font-bold w-full sm:w-auto transition-all transform hover:scale-105 flex items-center justify-center gap-2">
           <i class="pi pi-plus-circle"></i>
           Save Goal
@@ -52,44 +69,49 @@
       </form>
     </div>
 
-    <!-- Quick Action / Summary -->
+    <!-- GOAL OVERVIEW -->
     <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
-      <h3 class="text-xl font-semibold mb-1 text-gray-100">Goal Overview</h3>
+      <h3 class="text-xl font-semibold text-gray-100 mb-1">Goal Overview</h3>
       <p class="text-gray-400 text-sm mb-4">Your progress summary</p>
 
       <ul class="space-y-3 text-gray-300">
-        <li
-          class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50 transition-colors">
-          <span class="flex items-center gap-2"><i class="pi pi-flag text-indigo-400"></i> Total Goals</span>
+        <li class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30">
+          <span class="flex items-center gap-2">
+            <i class="pi pi-flag text-indigo-400"></i> Total Goals
+          </span>
           <span class="font-bold text-white text-lg">{{ totalGoals }}</span>
         </li>
-        <li
-          class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors">
-          <span class="flex items-center gap-2"><i class="pi pi-check-circle text-emerald-400"></i> Completed</span>
-          <span class="font-bold text-emerald-400 neon-text-green text-lg">{{ completedGoals }}</span>
+
+        <li class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+          <span class="flex items-center gap-2">
+            <i class="pi pi-check-circle text-emerald-400"></i> Completed
+          </span>
+          <span class="font-bold text-emerald-400 text-lg">{{ completedGoals }}</span>
         </li>
-        <li
-          class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors">
-          <span class="flex items-center gap-2"><i class="pi pi-clock text-amber-400"></i> In Progress</span>
+
+        <li class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+          <span class="flex items-center gap-2">
+            <i class="pi pi-clock text-amber-400"></i> In Progress
+          </span>
           <span class="font-bold text-amber-400 text-lg">{{ inProgressGoals }}</span>
         </li>
       </ul>
     </div>
   </div>
 
-  <!-- GOAL LIST TABLE -->
+  <!-- GOALS TABLE -->
   <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg mx-4 md:mx-6">
     <h3 class="text-xl font-semibold mb-4 text-gray-100">Your Goals</h3>
 
     <div class="overflow-x-auto">
       <table class="min-w-full table-auto">
         <thead>
-          <tr class="bg-slate-900/50 text-left border-b border-slate-700">
-            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider w-12">Complete</th>
-            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Goal</th>
-            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Target</th>
-            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Saved</th>
-            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase tracking-wider">Deadline</th>
+          <tr class="bg-slate-900/50 border-b border-slate-700 text-left">
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase w-12">Done</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase">Goal</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase">Target</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase">Saved</th>
+            <th class="px-4 py-3 text-gray-400 text-sm font-semibold uppercase">Deadline</th>
           </tr>
         </thead>
 
@@ -97,15 +119,18 @@
           @for (goal of goals; track goal.id) {
           <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
             <td class="px-4 py-3">
-              <input type="checkbox" 
-                     [checked]="goal.isCompleted" 
-                     (change)="toggleComplete(goal)"
-                     class="w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer" />
+              <input
+                type="checkbox"
+                (change)="toggleComplete(goal)"
+                class="w-5 h-5 cursor-pointer accent-indigo-500"
+              />
             </td>
             <td class="px-4 py-3 font-medium">{{ goal.name }}</td>
             <td class="px-4 py-3">${{ goal.targetAmount }}</td>
             <td class="px-4 py-3 text-emerald-400 font-bold">${{ goal.savedAmount }}</td>
-            <td class="px-4 py-3 text-gray-500">{{ goal.deadline }}</td>
+            <td class="px-4 py-3 text-gray-500">
+              {{ goal.deadline | date:'dd MMM yyyy' }}
+            </td>
           </tr>
           }
         </tbody>

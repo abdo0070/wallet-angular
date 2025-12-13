@@ -1,203 +1,95 @@
 <div class="w-full flex justify-center flex-col">
-  <!-- MAIN CONTENT CONTAINER -->
   <div class="w-11/12 max-w-7xl mx-auto pt-6 min-h-screen pb-24 md:pb-20">
 
-    <!-- DASHBOARD HEADER -->
+    <!-- HEADER -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-100">Financial Overview</h1>
       <p class="text-gray-400 mt-1">Welcome back, here's your financial summary.</p>
     </div>
 
-    <!-- WIDGETS GRID -->
+    <!-- BALANCE + BUDGET -->
     <div class="grid gap-6 md:grid-cols-3 mb-8">
 
-      <!-- Balance Card -->
+      <!-- BALANCE -->
       <div
-        class="md:col-span-2 bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group">
-        <div
-          class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-all">
-        </div>
+        class="md:col-span-2 bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+        <h3 class="text-lg text-indigo-200 font-medium">Total Balance</h3>
+        <p class="text-5xl font-bold mt-3"
+           [ngClass]="{'neon-text-blue': totalBalance >= 0, 'neon-text-red': totalBalance < 0}">
+          $ {{ totalBalance | number:'1.2-2' }}
+        </p>
 
-        <h3 class="text-lg text-indigo-200 font-medium relative z-10">Total Balance</h3>
-        <p class="text-5xl font-bold mt-3 relative z-10" [ngClass]="{'neon-text-blue': totalBalance >= 0, 'neon-text-red': totalBalance < 0}">$ {{ totalBalance | number:'1.2-2' }}</p>
-
-        <div class="mt-6 flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 relative z-10">
-          <button (click)="navigateTo('income')"
-            class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl shadow-lg shadow-indigo-500/20 w-full sm:w-auto font-semibold transition-all transform hover:scale-105">
-            Add Income
-          </button>
-          <button (click)="navigateTo('expense')"
-            class="bg-slate-700 hover:bg-slate-600 text-indigo-300 px-6 py-3 rounded-xl shadow w-full sm:w-auto font-semibold transition-all transform hover:scale-105 border border-slate-600">
-            Add Expense
-          </button>
+        <div class="mt-6 flex gap-4">
+          <button (click)="navigateTo('income')" class="btn-primary">Add Income</button>
+          <button (click)="navigateTo('expense')" class="btn-secondary">Add Expense</button>
         </div>
       </div>
 
-      <!-- Budget Widget -->
-      <div
-        class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent"></div>
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <i class="pi pi-calendar text-9xl"></i>
-        </div>
-        <div class="relative z-10">
-          <h3 class="text-lg opacity-90 font-medium">Monthly Budget</h3>
-          <p class="text-2xl font-bold mt-2 text-purple-400">$ {{ currentBudget | number:'1.2-2' }}</p>
-          <p class="text-sm text-gray-400 mt-1">{{ currentMonth }} {{ currentYear }}</p>
-        </div>
-        <button (click)="navigateTo('budget')"
-          class="mt-4 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/50 px-4 py-2 rounded-lg font-bold shadow-lg shadow-purple-500/10 self-start transition-all hover:shadow-purple-500/20 relative z-10 backdrop-blur-sm">
+      <!-- MONTHLY BUDGET -->
+      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+        <h3 class="text-lg font-medium">Monthly Budget</h3>
+        <p class="text-2xl font-bold text-purple-400 mt-2">
+          $ {{ currentBudget | number:'1.2-2' }}
+        </p>
+        <p class="text-sm text-gray-400">{{ currentMonth }} {{ currentYear }}</p>
+
+        <button (click)="navigateTo('budget')" class="btn-purple mt-4">
           Manage Budget
         </button>
       </div>
     </div>
 
-    <!-- Income, Expense, and Budget Summary Widgets -->
+    <!-- INCOME / EXPENSE / REMAINING -->
     <div class="grid gap-6 md:grid-cols-3 mb-8">
-      <!-- Income Widget -->
-      <div
-        class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent"></div>
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <i class="pi pi-wallet text-9xl"></i>
-        </div>
-        <div class="relative z-10">
-          <h3 class="text-lg opacity-90 font-medium">Total Income</h3>
-          <p class="text-4xl font-bold mt-2 text-emerald-400 neon-text-green">$ {{ totalIncome | number:'1.2-2' }}</p>
-        </div>
-        <button (click)="navigateTo('income')"
-          class="mt-4 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/50 px-4 py-2 rounded-lg font-bold shadow-lg shadow-emerald-500/10 self-start transition-all hover:shadow-emerald-500/20 relative z-10 backdrop-blur-sm">
-          Manage Income
-        </button>
+
+      <div class="widget-green">
+        <h3>Total Income</h3>
+        <p>$ {{ totalIncome | number:'1.2-2' }}</p>
+        <button (click)="navigateTo('income')">Manage Income</button>
       </div>
 
-      <!-- Expense Widget -->
-      <div
-        class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent"></div>
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <i class="pi pi-shopping-cart text-9xl"></i>
-        </div>
-        <div class="relative z-10">
-          <h3 class="text-lg opacity-90 font-medium">Total Expenses</h3>
-          <p class="text-4xl font-bold mt-2 text-red-400 neon-text-red">$ {{ totalExpenses | number:'1.2-2' }}</p>
-        </div>
-        <button (click)="navigateTo('expense')"
-          class="mt-4 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/50 px-4 py-2 rounded-lg font-bold shadow-lg shadow-red-500/10 self-start transition-all hover:shadow-red-500/20 relative z-10 backdrop-blur-sm">
-          Manage Expenses
-        </button>
+      <div class="widget-red">
+        <h3>Total Expenses</h3>
+        <p>$ {{ totalExpenses | number:'1.2-2' }}</p>
+        <button (click)="navigateTo('expense')">Manage Expenses</button>
       </div>
 
-      <!-- Budget Remaining Widget -->
-      <div
-        class="bg-slate-800 border border-slate-700/50 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent"></div>
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <i class="pi pi-chart-line text-9xl"></i>
-        </div>
-        <div class="relative z-10">
-          <h3 class="text-lg opacity-90 font-medium">Budget Remaining</h3>
-          <p class="text-4xl font-bold mt-2" [ngClass]="{'text-emerald-400': budgetRemaining >= 0, 'text-red-400': budgetRemaining < 0}">
-            $ {{ budgetRemaining | number:'1.2-2' }}
-          </p>
-          <p class="text-sm text-gray-400 mt-1">Income - Budget</p>
-        </div>
-        <button (click)="navigateTo('budget')"
-          class="mt-4 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/50 px-4 py-2 rounded-lg font-bold shadow-lg shadow-amber-500/10 self-start transition-all hover:shadow-amber-500/20 relative z-10 backdrop-blur-sm">
-          View Budget
-        </button>
+      <div class="widget-amber">
+        <h3>Budget Remaining</h3>
+        <p [ngClass]="{'text-emerald-400': budgetRemaining >= 0, 'text-red-400': budgetRemaining < 0}">
+          $ {{ budgetRemaining | number:'1.2-2' }}
+        </p>
+        <button (click)="navigateTo('budget')">View Budget</button>
       </div>
+
     </div>
 
+    <!-- GOALS SUMMARY -->
     <div class="grid gap-6 md:grid-cols-3 mb-8">
-      <!-- Goals Progress Summary -->
-      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg h-full">
-        <h3 class="text-xl font-bold text-gray-100 mb-4">Goals Progress</h3>
-        <p class="text-gray-400 text-sm mb-4">Your financial goals summary</p>
+      <div class="bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg">
+        <h3 class="text-xl font-bold mb-4">Goals Progress</h3>
 
-        <ul class="space-y-3 text-gray-300">
-          <li
-            class="flex justify-between p-3 rounded-lg bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50 transition-colors">
-            <span class="flex items-center gap-2"><i class="pi pi-flag text-indigo-400"></i> Total Goals</span>
-            <span class="font-bold text-white text-lg">{{ totalGoals }}</span>
-          </li>
-          <li
-            class="flex justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors">
-            <span class="flex items-center gap-2"><i class="pi pi-check-circle text-emerald-400"></i> Completed</span>
-            <span class="font-bold text-emerald-400 text-lg">{{ completedGoals }}</span>
-          </li>
-          <li
-            class="flex justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors">
-            <span class="flex items-center gap-2"><i class="pi pi-clock text-amber-400"></i> In Progress</span>
-            <span class="font-bold text-amber-400 text-lg">{{ pendingGoals }}</span>
-          </li>
+        <ul class="space-y-3">
+          <li>Total Goals <span>{{ totalGoals }}</span></li>
+          <li>Completed <span>{{ completedGoals }}</span></li>
+          <li>In Progress <span>{{ pendingGoals }}</span></li>
         </ul>
       </div>
-
-      <!-- TRANSACTIONS TABLE -->
-      <div class="md:col-span-2 bg-slate-800 border border-slate-700/50 p-6 rounded-2xl shadow-lg h-full">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-gray-100">Recent Transactions</h3>
-          <button class="text-indigo-400 font-semibold text-sm hover:text-indigo-300 hover:underline">View All</button>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="min-w-full table-auto">
-            <thead>
-              <tr class="bg-slate-900/50 text-left border-b border-slate-700">
-                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Name</th>
-                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Type</th>
-                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Amount</th>
-                <th class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider font-semibold">Date</th>
-              </tr>
-            </thead>
-
-            <tbody class="text-gray-300 text-sm">
-
-              @for (tran of transactions; track tran.id){
-              <tr class="border-b">
-                <td class="px-4 py-3">{{tran.name}}</td>
-                <td class="px-4 py-3">{{tran.description}}</td>
-                <td class="px-4 py-3 text-red-600">{{tran.balance}}</td>
-                <td class="px-4 py-3">{{tran.created_at}}</td>
-              </tr>
-              }
-
-
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
 
-    <!-- GOAL SETTING SECTION -->
+    <!-- GOAL SETTING -->
     <div class="mt-8 mb-20">
       <app-goal-setting></app-goal-setting>
     </div>
 
-    <!-- MOBILE NAV BAR -->
-    <div
-      class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 shadow-xl p-3 flex justify-around md:hidden z-40">
-      <button (click)="navigateTo('dashboard')"
-        class="flex flex-col items-center text-indigo-400 text-xs font-semibold">
-        <i class="pi pi-home text-xl mb-1 neon-text-blue"></i>Home
-      </button>
-      <button (click)="navigateTo('income')"
-        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
-        <i class="pi pi-wallet text-xl mb-1"></i>Income
-      </button>
-      <button (click)="navigateTo('expense')"
-        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
-        <i class="pi pi-shopping-cart text-xl mb-1"></i>Expenses
-      </button>
-      <button (click)="navigateTo('budget')"
-        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
-        <i class="pi pi-calendar text-xl mb-1"></i>Budget
-      </button>
-      <button (click)="navigateTo('goals')"
-        class="flex flex-col items-center text-gray-500 hover:text-indigo-400 text-xs font-medium transition-colors">
-        <i class="pi pi-flag text-xl mb-1"></i>Goals
-      </button>
+    <!-- MOBILE NAV -->
+    <div class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t p-3 flex justify-around md:hidden">
+      <button (click)="navigateTo('dashboard')">Home</button>
+      <button (click)="navigateTo('income')">Income</button>
+      <button (click)="navigateTo('expense')">Expenses</button>
+      <button (click)="navigateTo('budget')">Budget</button>
+      <button (click)="navigateTo('goals')">Goals</button>
     </div>
+
   </div>
 </div>
