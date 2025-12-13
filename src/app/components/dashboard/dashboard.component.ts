@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   constructor(private userDataService: UserDataService) {}
 
   ngOnInit(): void {
+    // this.transactions = this.userDataService.getUserTransactions();
     this.transactions = [
       {
         id: 'tx_001',
@@ -46,7 +47,7 @@ export class DashboardComponent implements OnInit {
       next: (user) => {
         this.user = user;
 
-        this.userDataService.getUserTransactions(1).subscribe({
+        this.userDataService.getUserTransactions().subscribe({
           next: (transactions) => {
             this.transactions = transactions;
             this.loading = false;
@@ -64,6 +65,7 @@ export class DashboardComponent implements OnInit {
     });
   }
   addMoney(): void {
+    // new page 
     console.log('Add Money clicked');
   }
 
@@ -81,13 +83,5 @@ export class DashboardComponent implements OnInit {
 
   exchange(): void {
     console.log('Exchange clicked');
-  }
-  formatAmount(amount: number): string {
-    const sign = amount > 0 ? '+' : '-';
-    return `${sign} $${Math.abs(amount).toFixed(2)}`;
-  }
-
-  isCredit(amount: number): boolean {
-    return amount > 0;
   }
 }

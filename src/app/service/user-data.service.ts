@@ -9,6 +9,7 @@ import { Transaction } from '../models/transaction.model';
 })
 export class UserDataService {
   private readonly API_BASE = 'http://localhost:3000'; // json-server
+  token : string = ""; // Login -> save token
   constructor(private http: HttpClient) {}
 
   getUser(): Observable<User> {
@@ -16,12 +17,12 @@ export class UserDataService {
   }
 
 
-  getUserTransactions(userId: number): Observable<Transaction[]> {
+  getUserTransactions(): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
       `${this.API_BASE}/transactions`,
       {
         params: {
-          user_id: userId,
+          
         },
       }
     );
