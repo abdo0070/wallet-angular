@@ -19,8 +19,8 @@ export class LoginComponent {
     email: '',
     password: ''
   };
-  emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-  passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$/;
+  emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
 
   constructor(
     private authService: AuthService,
@@ -29,11 +29,13 @@ export class LoginComponent {
   ) { }
 
   onSubmit(form: NgForm) {
-    if (form.invalid) {
+    // Check for "required" errors specifically
+    if (!this.formData.email || !this.formData.password) {
       this.errorMessage = 'Email and password are required.';
       return;
     }
 
+    // Check pattern errors manually if form validation failed but fields are present
     if (!this.emailPattern.test(this.formData.email)) {
       this.errorMessage = 'Enter a valid email address.';
       return;
@@ -53,8 +55,8 @@ export class LoginComponent {
         this.sharedService.setUser(userId, res.name);
         this.router.navigate(['/dashboard']);
       },
-      error: () => {
-        this.errorMessage = 'Login failed. Check API link or credentials.';
+      error: (err) => {
+        this.errorMessage = err.error?.msg || 'Login failed. Check API link or credentials.';
         this.loading = false;
       },
       complete: () => {

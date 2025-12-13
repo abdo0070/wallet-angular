@@ -47,7 +47,7 @@ export class RegisterComponent {
     private authService: AuthService,
     private sharedService: SharedService,
     private router: Router
-  ) {}
+  ) { }
 
   // ---------------------------
   // CHECK PASSWORD LIVE
@@ -128,10 +128,10 @@ export class RegisterComponent {
       next: (res: AuthResponse) => {
         const userId = res.userId || 'user1';
         this.sharedService.setUser(userId, res.name || this.formData.name);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/login']);
       },
-      error: () => {
-        this.errorMessage = 'Registration failed. Check API link or details.';
+      error: (err) => {
+        this.errorMessage = err.error?.msg || 'Registration failed. Check API link or details.';
         this.loading = false;
       },
       complete: () => {

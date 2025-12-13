@@ -32,6 +32,8 @@
       <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="space-y-5">
 
         <!-- FULL NAME -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-indigo-200">Full Name</label>
           <input 
           type="text"
           name="name"
@@ -43,7 +45,6 @@
                 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
                 text-white placeholder-slate-500 transition-all font-medium" />
 
-
           <p *ngIf="errors.name"
              class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
             {{ errors.name }}
@@ -51,6 +52,8 @@
         </div>
 
         <!-- EMAIL -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-indigo-200">Email</label>
           <input 
           type="email"
           name="email"
@@ -61,7 +64,6 @@
           class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 
                 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 
                 text-white placeholder-slate-500 transition-all font-medium" />
-
 
           <p *ngIf="errors.email"
              class="text-xs bg-red-500/20 border border-red-500/40 text-red-300 px-3 py-2 rounded-lg">
