@@ -10,6 +10,8 @@ import { UserDataService } from '../../service/user-data.service';
 import { GoalService } from '../../services/goal.service';
 import { Goal } from '../../models/goal.model';
 import { IncomeService } from '../../components/income/income.service';
+import { ExpenseService } from '../../components/expense/expense.service';
+import { BudgetService } from '../../components/create-budget/budget.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,12 @@ import { IncomeService } from '../../components/income/income.service';
 })
 export class DashboardComponent implements OnInit {
   totalIncome: number = 0;
+  totalExpenses: number = 0;
   totalBalance: number = 0;
+  currentBudget: number = 0;
+  budgetRemaining: number = 0;
+  currentMonth: string = '';
+  currentYear: number = new Date().getFullYear();
   get userId() { return this.sharedService.userId; } // Dynamic access
 
   user!: User;
@@ -38,11 +45,16 @@ export class DashboardComponent implements OnInit {
     private sharedService: SharedService,
     private userDataService: UserDataService,
     private goalService: GoalService,
-    private incomeService: IncomeService
+    private incomeService: IncomeService,
+    private expenseService: ExpenseService,
+    private budgetService: BudgetService
   ) { }
 
   ngOnInit(): void {
+    this.currentMonth = this.getCurrentMonth();
     this.fetchTotalIncome();
+    this.fetchTotalExpenses();
+    this.fetchCurrentBudget();
     this.loadGoals();
 
     // Static transactions text (demo data for now)
@@ -86,22 +98,62 @@ export class DashboardComponent implements OnInit {
     this.pendingGoals = this.totalGoals - this.completedGoals;
   }
 
+  fetchTotalExpenses() {
+    this.expenseService.getTotalExpenses().subscribe({
+      next: (totalExpense: number) => {
+        this.totalExpenses = Number(totalExpense) || 0;
+        this.calculateBalance();
+      },
+      error: (err) => {
+        console.error('Failed to load total expenses', err);
+        this.totalExpenses = 0;
+        this.calculateBalance();
+      }
+    });
+  }
+
+  calculateBalance() {
+    this.totalBalance = this.totalIncome - this.totalExpenses;
+  }
+
+  getCurrentMonth(): string {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[new Date().getMonth()];
+  }
+
+  fetchCurrentBudget() {
+    this.budgetService.getBudgetByMonth(this.currentMonth, this.currentYear).subscribe({
+      next: (budget) => {
+        if (budget) {
+          this.currentBudget = budget.totalAmount || 0;
+        } else {
+          this.currentBudget = 0;
+        }
+        this.budgetRemaining = this.totalIncome - this.currentBudget;
+      },
+      error: (err) => {
+        console.error('Failed to load current budget', err);
+        this.currentBudget = 0;
+        this.budgetRemaining = this.totalIncome;
+      }
+    });
+  }
+
   fetchTotalIncome() {
     this.incomeService.getTotalIncome().subscribe({
-      next: (response: any) => {
-        // Handle response format from IncomeController.getTotal {msg, data: {totalIncome}}
-        // Or if service returns raw data. 
-        // Let's assume service returns { totalIncome: number } or similar.
-        // Checking backend IncomeController.getTotal: res.json({ msg: "SUCCESS", data: { totalIncome } })
-        // Checking IncomeService likely maps .data.
-
-        // Safely handle structure
-        const income = response.data?.totalIncome !== undefined ? response.data.totalIncome : (response.totalIncome || response);
-        this.totalIncome = Number(income) || 0;
-        this.totalBalance = this.totalIncome;
+      next: (totalIncome: number) => {
+        this.totalIncome = Number(totalIncome) || 0;
+        this.calculateBalance();
+        this.budgetRemaining = this.totalIncome - this.currentBudget;
       },
       error: (err) => {
         console.error('Failed to load total income', err);
+        this.totalIncome = 0;
+        this.calculateBalance();
+        this.budgetRemaining = this.totalIncome - this.currentBudget;
       }
     });
   }

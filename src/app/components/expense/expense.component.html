@@ -1,0 +1,178 @@
+<div class="w-full flex justify-center flex-col items-center min-h-screen pb-24 md:pb-10">
+    <div
+        class="w-11/12 max-w-7xl bg-slate-800 border border-slate-700/50 p-4 md:p-10 rounded-3xl shadow-2xl relative z-10 mx-auto my-6 md:my-10">
+
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-700 pb-6">
+            <div class="flex flex-col">
+                <h2 class="text-3xl font-extrabold text-gray-100 tracking-tight neon-text-red">Expense Tracking</h2>
+                <p class="text-gray-400 mt-1">Track your spending and manage expenses efficiently.</p>
+            </div>
+
+            <div
+                class="flex items-center gap-6 mt-4 md:mt-0 bg-slate-700/50 px-6 py-3 rounded-2xl shadow-lg border border-red-500/30 neon-box-red">
+                <div class="flex flex-col items-end">
+                    <span class="text-xs uppercase font-bold text-red-400 tracking-wider">Total Expenses</span>
+                    <span class="text-3xl font-black text-red-300 neon-text-red">${{ getTotalExpenseAmount() |
+                        number:'1.2-2'
+                        }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-end mb-6">
+            <button type="button" pButton pRipple label="Add New Expense" icon="pi pi-plus"
+                class="p-button-rounded bg-gradient-to-r from-red-600 to-pink-600 border-none hover:from-red-500 hover:to-pink-500 px-6 py-3 shadow-lg shadow-red-500/30 transition-transform transform hover:scale-105 font-bold"
+                (click)="openNew()">
+            </button>
+        </div>
+
+        <!-- Dialog -->
+        <p-dialog [header]="isEditMode ? 'Edit Expense' : 'Add Expense'" [(visible)]="showDialog" [modal]="true"
+            [style]="{ 'width': '90vw', 'maxWidth': '500px' }" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
+            <div class="p-4">
+                <form #expenseForm="ngForm" (ngSubmit)="onSubmit(expenseForm)">
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-2">
+                            <label for="ExpenseName" class="font-semibold text-gray-200">Expense Title</label>
+                            <input id="ExpenseName" type="text" pInputText
+                                class="w-full p-3 rounded-lg border-gray-300 focus:border-red-500"
+                                placeholder="e.g. Groceries, Gas, Rent" name="name" [(ngModel)]="expenseData.name" required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="expenseAmount" class="font-semibold text-gray-200">Amount ($)</label>
+                            <input id="expenseAmount" type="number" pInputText
+                                class="w-full p-3 rounded-lg border-gray-300 focus:border-red-500" placeholder="0.00"
+                                name="amount" [(ngModel)]="expenseData.amount" required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="expenseCategory" class="font-semibold text-gray-200">Category</label>
+                            <p-dropdown id="expenseCategory" [options]="categories" [(ngModel)]="selectedCategory"
+                                optionLabel="name" placeholder="Select a Category" name="selectedCategory"
+                                styleClass="w-full rounded-lg border-gray-300" [showClear]="true"></p-dropdown>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" pButton pRipple [label]="isEditMode ? 'Update Expense' : 'Save Expense'"
+                                icon="pi pi-check"
+                                class="w-full bg-red-600 border-none hover:bg-red-700 py-3 rounded-xl font-bold text-lg shadow-md"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </p-dialog>
+
+        <!-- Content Area -->
+        <div class="mt-4">
+            <p-dataView #dv [value]="expenses" [layout]="layout"
+                emptyMessage="No expenses found. Add one to get started!">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-end mb-4">
+                        <p-dataViewLayoutOptions
+                            styleClass="bg-slate-700 rounded-lg p-1 border border-slate-600"></p-dataViewLayoutOptions>
+                    </div>
+                </ng-template>
+
+                <!-- LIST VIEW -->
+                <ng-template pTemplate="list" let-expenses>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col md:flex-row items-center p-6 bg-slate-900/50 border border-slate-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 hover:border-red-500/30"
+                            *ngFor="let expense of expenses">
+
+                            <!-- Icon/Category -->
+                            <div class="flex items-center gap-4 flex-1 w-full md:w-auto">
+                                <div
+                                    class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-red-400 shadow-inner">
+                                    <i class="pi pi-shopping-cart text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-gray-100">{{ expense.name }}</div>
+                                    <div
+                                        class="text-sm text-gray-400 bg-slate-800 border border-slate-700 px-2 py-1 rounded-md inline-block mt-1">
+                                        {{ getCategoryDisplayName(expense.category) }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Amount & Actions -->
+                            <div class="flex items-center justify-between w-full md:w-auto gap-4 mt-4 md:mt-0">
+                                <span class="text-2xl font-bold text-red-400 neon-text-red">- ${{ expense.amount |
+                                    number:'1.2-2'
+                                    }}</span>
+                                <div class="flex gap-2">
+                                    <button pButton icon="pi pi-pencil"
+                                        class="p-button-text p-button-rounded hover:bg-slate-700 text-red-400"
+                                        (click)="editExpense(expense)" pTooltip="Edit" tooltipPosition="top"></button>
+                                    <button pButton icon="pi pi-trash"
+                                        class="p-button-danger p-button-text p-button-rounded hover:bg-slate-700/50"
+                                        (click)="deleteExpense(expense)" pTooltip="Delete" tooltipPosition="top"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- GRID VIEW -->
+                <ng-template pTemplate="grid" let-expenses>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="col-span-1" *ngFor="let expense of expenses">
+                            <div
+                                class="bg-slate-900/50 border border-slate-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:border-red-500/40 transition-all duration-300 flex flex-col h-full relative overflow-hidden group">
+                                <div
+                                    class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                                    <button pButton icon="pi pi-pencil"
+                                        class="p-button-text p-button-rounded text-red-400 bg-slate-800 shadow-sm"
+                                        (click)="editExpense(expense)"></button>
+                                    <button pButton icon="pi pi-trash"
+                                        class="p-button-danger p-button-text p-button-rounded bg-slate-800 shadow-sm"
+                                        (click)="deleteExpense(expense)"></button>
+                                </div>
+
+                                <div class="flex items-center justify-center mb-4">
+                                    <div
+                                        class="w-16 h-16 bg-gradient-to-br from-red-500/80 to-pink-600/80 rounded-2xl flex items-center justify-center text-white shadow-lg neon-box-red">
+                                        <span class="text-2xl font-bold">{{ expense.name.charAt(0).toUpperCase()
+                                            }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-center flex-1">
+                                    <h3 class="text-xl font-bold text-gray-100 mb-1">{{ expense.name }}</h3>
+                                    <span
+                                        class="text-xs font-semibold text-red-400 uppercase tracking-widest bg-slate-800 px-3 py-1 rounded-full border border-slate-700">{{
+                                        getCategoryDisplayName(expense.category) }}</span>
+                                </div>
+
+                                <div class="mt-6 text-center pt-4 border-t border-slate-700/50">
+                                    <span class="text-3xl font-black text-white neon-text-red">${{ expense.amount |
+                                        number: '1.2-2'
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+
+    <!-- MOBILE NAV BAR -->
+    <div
+        class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 shadow-xl p-3 flex justify-around md:hidden z-40">
+        <button (click)="navigateTo('dashboard')" class="flex flex-col items-center text-gray-500 hover:text-red-400 text-xs font-medium transition-colors">
+            <i class="pi pi-home text-xl mb-1"></i>Home
+        </button>
+        <button (click)="navigateTo('expense')" class="flex flex-col items-center text-red-400 text-xs font-semibold">
+            <i class="pi pi-shopping-cart text-xl mb-1 neon-text-red"></i>Expenses
+        </button>
+        <button
+            class="flex flex-col items-center text-gray-500 hover:text-red-400 text-xs font-medium transition-colors">
+            <i class="pi pi-arrows-alt text-xl mb-1"></i>Transfer
+        </button>
+        <button
+            class="flex flex-col items-center text-gray-500 hover:text-red-400 text-xs font-medium transition-colors">
+            <i class="pi pi-cog text-xl mb-1"></i>Settings
+        </button>
+    </div>
+</div>
+<p-toast></p-toast>
+

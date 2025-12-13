@@ -3,6 +3,8 @@ const TransactionController = require("../controllers/Transaction");
 const UserController = require("../controllers/Users");
 const GoalController = require("../controllers/Goal");
 const IncomeController = require("../controllers/Income");
+const ExpenseController = require("../controllers/Expense");
+const BudgetController = require("../controllers/Budget");
 
 const router = require("express").Router();
 const verifyJWT = require("../middleware/jwtVerify");
@@ -40,5 +42,21 @@ router.get("/incomes/total/:userId", verifyJWT, IncomeController.getTotal);
 router.post("/incomes", verifyJWT, IncomeController.create);
 router.put("/incomes/:id", verifyJWT, IncomeController.update);
 router.delete("/incomes/:id", verifyJWT, IncomeController.delete);
+
+// Expenses
+router.get("/expenses/:userId", verifyJWT, ExpenseController.getAll);
+router.get("/expenses/single/:id", verifyJWT, ExpenseController.getExpense);
+router.get("/expenses/total/:userId", verifyJWT, ExpenseController.getTotal);
+router.post("/expenses", verifyJWT, ExpenseController.create);
+router.put("/expenses/:id", verifyJWT, ExpenseController.update);
+router.delete("/expenses/:id", verifyJWT, ExpenseController.delete);
+
+// Budgets
+router.get("/budgets/:userId", verifyJWT, BudgetController.getAll);
+router.get("/budgets/single/:id", verifyJWT, BudgetController.getBudget);
+router.get("/budgets/:userId/:month/:year", verifyJWT, BudgetController.getBudgetByMonth);
+router.post("/budgets", verifyJWT, BudgetController.create);
+router.put("/budgets/:id", verifyJWT, BudgetController.update);
+router.delete("/budgets/:id", verifyJWT, BudgetController.delete);
 
 module.exports = router;

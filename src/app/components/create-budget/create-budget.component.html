@@ -1,0 +1,93 @@
+<div class="main-container">
+  <h1 class="page-title">Create New Budget</h1>
+
+  <div class="section-title">Basic Information</div>
+  <div class="card basic-info">
+    <label>Month <span style="color:red">*</span></label>
+    <select class="dark-select" [(ngModel)]="selectedMonth" (change)="onMonthChange()" [disabled]="isLoading">
+      <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+    </select>
+    <small style="color: #9ca3af; margin-top: 8px; display: block;">Year: {{ currentYear }}</small>
+  </div>
+
+  <div class="section-title">Budget Categories</div>
+
+  <div class="grid-container">
+    <div class="left-panel">
+      <div *ngIf="isLoading" style="text-align: center; padding: 20px; color: #9ca3af;">
+        Loading budget...
+      </div>
+      <div
+        class="category-item"
+        *ngFor="let item of addedCategories; let i = index"
+      >
+        <div class="cat-header">
+          <div class="cat-info">
+            <span class="name">{{ item.name }}</span>
+            <span class="limit">${{ item.limit | number:'1.2-2' }}</span>
+          </div>
+
+          <button class="btn-delete" (click)="deleteCategory(i)" title="Delete" [disabled]="isLoading">
+            remove
+          </button>
+        </div>
+      </div>
+      <button
+        *ngIf="!isAdding && !isLoading"
+        class="btn-add-category"
+        (click)="enableAddMode()"
+      >
+        + Add Category
+      </button>
+
+      <div *ngIf="isAdding" class="add-form">
+        <input
+          type="text"
+          placeholder="Category Name"
+          [(ngModel)]="newCategoryName"
+          class="mini-input"
+        />
+        <input
+          type="number"
+          placeholder="Limit Amount"
+          [(ngModel)]="newCategoryLimit"
+          class="mini-input"
+          min="0"
+          step="0.01"
+        />
+
+        <div class="action-buttons">
+          <button class="btn-confirm" (click)="saveNewCategory()">Add</button>
+          <button class="btn-cancel" (click)="cancelAdd()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel summary-card">
+      <h3>
+        Summary for <span style="color: white">{{ selectedMonth }} {{ currentYear }}</span>
+      </h3>
+      <div class="summary-row">
+        <span>Total Budgeted</span>
+        <b>${{ totalBudget | number:'1.2-2' }}</b>
+      </div>
+      <div class="summary-row">
+        <span>Total Income</span>
+        <b>${{ totalIncome | number:'1.2-2' }}</b>
+      </div>
+      <hr style="border-color:#374151; margin:10px 0;" />
+      <div class="summary-row remaining">
+        <span>Remaining</span>
+        <b [style.color]="remaining < 0 ? '#ef4444' : '#10b981'"
+          >${{ remaining | number:'1.2-2' }}</b
+        >
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-save-main" (click)="saveBudget()" [disabled]="isLoading || addedCategories.length === 0">
+    {{ isLoading ? 'Saving...' : (existingBudgetId ? 'Update Budget' : 'Save Budget') }}
+  </button>
+</div>
+<p-toast></p-toast>
+
