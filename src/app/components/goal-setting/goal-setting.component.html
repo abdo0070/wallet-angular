@@ -1,5 +1,4 @@
 <div class="w-full">
-
   <!-- PAGE HEADER -->
   <div class="p-4 md:p-6">
     <h1 class="text-3xl font-bold text-gray-100">Goal Setting</h1>
@@ -8,7 +7,6 @@
 
   <!-- GOAL CREATION + SUMMARY -->
   <div class="grid gap-6 md:grid-cols-3 p-4 md:p-6">
-
     <!-- Create New Goal -->
     <div
       class="md:col-span-2 bg-gradient-to-br from-indigo-900 to-slate-800 border border-indigo-500/20 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
@@ -16,11 +14,11 @@
       <h3 class="text-xl font-semibold relative z-10 mb-1">Create New Goal</h3>
       <p class="text-indigo-300 text-sm mb-5 relative z-10">Set your financial targets and track progress</p>
 
-      <form class="space-y-5 relative z-10">
+      <form class="space-y-5 relative z-10" (ngSubmit)="saveGoal()">
 
         <div>
           <label class="block text-sm font-medium text-indigo-200 mb-2">Goal Name</label>
-          <input type="text"
+          <input type="text" [(ngModel)]="goalName" name="goalName"
             class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
             placeholder="e.g., Buy a Car, Vacation Fund" />
         </div>
@@ -28,14 +26,14 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-indigo-200 mb-2">Target Amount ($)</label>
-            <input type="number"
+            <input type="number" [(ngModel)]="targetAmount" name="targetAmount"
               class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium"
               placeholder="5,000" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-indigo-200 mb-2">Target Deadline</label>
-            <input type="date"
+            <input type="date" [(ngModel)]="deadline" name="deadline"
               class="w-full p-3 rounded-xl bg-slate-900/70 border-2 border-slate-600 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 text-white placeholder-slate-500 focus:outline-none transition-all font-medium [color-scheme:dark]" />
           </div>
         </div>
@@ -89,31 +87,16 @@
         </thead>
 
         <tbody class="text-gray-300 text-sm">
-
+          @for (goal of goals; track goal.id) {
           <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
-            <td class="px-4 py-3 font-medium">Buy a Laptop</td>
-            <td class="px-4 py-3">$1200</td>
-            <td class="px-4 py-3 text-emerald-400 font-bold">$600</td>
-            <td class="px-4 py-3 text-gray-500">Jan 20, 2026</td>
+            <td class="px-4 py-3 font-medium">{{ goal.name }}</td>
+            <td class="px-4 py-3">${{ goal.targetAmount }}</td>
+            <td class="px-4 py-3 text-emerald-400 font-bold">${{ goal.savedAmount }}</td>
+            <td class="px-4 py-3 text-gray-500">{{ goal.deadline }}</td>
           </tr>
-
-          <tr class="border-b border-slate-700 hover:bg-slate-700/30 transition-colors">
-            <td class="px-4 py-3 font-medium">Vacation Trip</td>
-            <td class="px-4 py-3">$3000</td>
-            <td class="px-4 py-3 text-emerald-400 font-bold">$1,200</td>
-            <td class="px-4 py-3 text-gray-500">Jun 5, 2026</td>
-          </tr>
-
-          <tr class="hover:bg-slate-700/30 transition-colors">
-            <td class="px-4 py-3 font-medium">Emergency Fund</td>
-            <td class="px-4 py-3">$5,000</td>
-            <td class="px-4 py-3 text-emerald-400 font-bold">$4,100</td>
-            <td class="px-4 py-3 text-gray-500">Dec 31, 2026</td>
-          </tr>
-
+          }
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
